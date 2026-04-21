@@ -1,0 +1,59 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      // Allow the runtime user email as bootstrapped admin, or use a Firestore document to determine other admins
+      return request.auth != null && (request.auth.token.email == "carthagemauricio@gmail.com" || exists(/databases/$(database)/documents/admins/$(request.auth.uid)));
+    }
+    
+    function isValidString(val, minLen, maxLen) {
+      return val is string && val.size() >= minLen && val.size() <= maxLen;
+    }
+
+    function isValidAppointment(data) {
+      return data.keys().hasAll(['id', 'clientName', 'clientPhone', 'serviceId', 'professionalId', 'date', 'time', 'status', 'createdAt']) &&
+             isValidString(data.id, 1, 100) &&
+             isValidString(data.clientName, 2, 100) &&
+             isValidString(data.clientPhone, 5, 20) &&
+             isValidString(data.serviceId, 1, 50) &&
+             isValidString(data.professionalId, 1, 50) &&
+             data.date is string && data.date.matches("^\\d{4}-\\d{2}-\\d{2}$") &&
+             data.time is string && data.time.matches("^\\d{2}:\\d{2}$") &&
+             data.status in ['Pendente', 'Confirmado', 'Cancelado'] &&
+             data.createdAt is string &&
+             (!('whatsappSent' in data) || data.whatsappSent is bool);
+    }
+
+    function isValidPublicSlot(data) {
+      return data.keys().hasAll(['id', 'appId', 'professionalId', 'date', 'time', 'status']) &&
+             data.status in ['Pendente', 'Confirmado', 'Cancelado'];
+    }
+
+    match /appointments/{appId} {
+      allow create: if isValidAppointment(request.resource.data) && request.resource.data.status == 'Pendente';
+      allow read, list: if true;
+      allow update, delete: if true;
+    }
+
+    match /public_slots/{slotId} {
+      allow create: if isValidPublicSlot(request.resource.data) && request.resource.data.status == 'Pendente';
+      allow read, list: if true;
+      allow update, delete: if true;
+    }
+
+    match /services/{serviceId} {
+      allow read, list: if true;
+      allow write: if true;
+    }
+
+    match /professionals/{profId} {
+      allow read, list: if true;
+      allow write: if true;
+    }
+  }
+}
