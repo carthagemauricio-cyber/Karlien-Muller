@@ -20,6 +20,7 @@ interface AppContextType {
   removeAppointment: (id: string) => void;
   publicSlots: any[];
   searchAppointments: (clientName: string) => Promise<Appointment[]>;
+  subscribeToAppointmentsSearch: (clientName: string, callback: (apps: Appointment[]) => void) => () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -236,13 +237,43 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const unsubscribeFromSearch = (unsubRef: { current: (() => void) | null }) => {
+    if (unsubRef.current) {
+        unsubRef.current();
+        unsubRef.current = null;
+    }
+  };
+
+  const subscribeToAppointmentsSearch = (clientSearchTerm: string, callback: (apps: Appointment[]) => void): (() => void) => {
+    let internalUnsub: (() => void) | null = null;
+    import('firebase/firestore').then(({ collection, onSnapshot }) => {
+      internalUnsub = onSnapshot(collection(db, 'appointments'), (snapshot) => {
+        const searchTermLower = clientSearchTerm.trim().toLowerCase();
+        const results = snapshot.docs
+          .map(doc => doc.data() as Appointment)
+          .filter(app => {
+            const normalizedApp = (app.clientName || '').trim().toLowerCase();
+            return normalizedApp.includes(searchTermLower) || (app.clientPhone || '').includes(clientSearchTerm);
+          });
+        callback(results);
+      }, (error) => {
+        console.error("Search error: ", error);
+        callback([]);
+      });
+    });
+
+    return () => {
+      if (internalUnsub) internalUnsub();
+    };
+  };
+
   return (
     <AppContext.Provider value={{
       professionals, services, appointments,
       addProfessional, updateProfessional, removeProfessional,
       addService, updateService, removeService,
       addAppointment, updateAppointmentStatus, updateAppointment, removeAppointment, publicSlots,
-      searchAppointments
+      searchAppointments, subscribeToAppointmentsSearch
     }}>
       {children}
     </AppContext.Provider>

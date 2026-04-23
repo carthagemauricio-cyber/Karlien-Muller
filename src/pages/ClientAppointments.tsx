@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAppStore } from '../store';
 import { Search, Calendar, Clock, User, CheckCircle2, XCircle, SearchIcon } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
@@ -6,25 +6,44 @@ import { ptBR, enUS } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
 
 export const ClientAppointments = () => {
-  const { services, professionals, searchAppointments } = useAppStore();
+  const { services, professionals, subscribeToAppointmentsSearch } = useAppStore();
   const { t, i18n } = useTranslation();
   const [nameSearch, setNameSearch] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
   const [myAppointments, setMyAppointments] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   
+  const searchUnsub = useRef<(() => void) | null>(null);
+
   const currentLocale = i18n.language.startsWith('pt') ? ptBR : enUS;
+
+  useEffect(() => {
+    return () => {
+      // Cleanup subscription when component unmounts
+      if (searchUnsub.current) searchUnsub.current();
+    }
+  }, []);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (nameSearch.trim()) {
       setIsSearching(true);
-      const results = await searchAppointments(nameSearch);
-      setMyAppointments(
-        results.sort((a, b) => (b.createdAt ? new Date(b.createdAt).getTime() : 0) - (a.createdAt ? new Date(a.createdAt).getTime() : 0))
-      );
-      setHasSearched(true);
-      setIsSearching(false);
+      
+      // Unsubscribe from any previous search stream
+      if (searchUnsub.current) {
+        searchUnsub.current();
+        searchUnsub.current = null;
+      }
+      
+      const unsub = subscribeToAppointmentsSearch(nameSearch, (results) => {
+         setMyAppointments(
+           results.sort((a, b) => (b.createdAt ? new Date(b.createdAt).getTime() : 0) - (a.createdAt ? new Date(a.createdAt).getTime() : 0))
+         );
+         setHasSearched(true);
+         setIsSearching(false);
+      });
+      
+      searchUnsub.current = unsub;
     }
   };
 

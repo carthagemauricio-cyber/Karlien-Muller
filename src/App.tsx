@@ -29,7 +29,11 @@ function AppContent() {
   }, []);
 
   if (appMode === 'landing') {
-    return <Landing onSelectMode={setAppMode} />;
+    return (
+       <>
+         <Landing onSelectMode={setAppMode} />
+       </>
+    );
   }
 
   if (appMode === 'client') {
