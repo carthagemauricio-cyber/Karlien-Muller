@@ -246,7 +246,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   const subscribeToAppointmentsSearch = (clientSearchTerm: string, callback: (apps: Appointment[]) => void): (() => void) => {
     let internalUnsub: (() => void) | null = null;
+    let isCancelled = false;
+    
     import('firebase/firestore').then(({ collection, onSnapshot }) => {
+      if (isCancelled) return;
+      
       internalUnsub = onSnapshot(collection(db, 'appointments'), (snapshot) => {
         const searchTermLower = clientSearchTerm.trim().toLowerCase();
         const results = snapshot.docs
@@ -263,6 +267,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     });
 
     return () => {
+      isCancelled = true;
       if (internalUnsub) internalUnsub();
     };
   };

@@ -23,8 +23,6 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
   const [clientName, setClientName] = useState('');
   const [clientPhone, setClientPhone] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
-  const [aiSuggestedTimes, setAiSuggestedTimes] = useState<string[]>([]);
-  const [loadingAiTimes, setLoadingAiTimes] = useState(false);
 
   // Scroll to top on step change
   useEffect(() => {
@@ -100,60 +98,6 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
     }
     return slots;
   }, [professionalId, date, appointments, publicSlots, selectedProfessional]);
-
-  useEffect(() => {
-    if (step === 4 && professionalId && date) {
-        setLoadingAiTimes(true);
-        setAiSuggestedTimes([]);
-        
-        fetch('/api/recommend-times', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            selectedProfessional,
-            date,
-            allSlots: [...(publicSlots || []), ...(appointments || [])].filter(s => s.status !== 'Cancelado'),
-            upcomingDays: upcomingDays.slice(0, 7),
-            availableTimes
-          })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.recommendations) {
-               // Extract just the time part since recommendations might be "YYYY-MM-DD HH:mm"
-               const times = data.recommendations
-                 .filter((r: string) => r.startsWith(date))
-                 .map((r: string) => r.split(' ')[1])
-                 .filter(Boolean);
-               
-               // Only take times that are actually in `availableTimes` or suggest otherwise
-               setAiSuggestedTimes(times.length > 0 ? times : availableTimes.slice(0, 3));
-            }
-        })
-        .catch(console.error)
-        .finally(() => setLoadingAiTimes(false));
-    }
-  }, [step, professionalId, date, availableTimes]);
-
-  // AI Recommended Services (calculated locally based on popularity from public Slots/Appointments)
-  const aiRecommendedServices = useMemo(() => {
-    if (services.length === 0) return [];
-    
-    // Count occurrences of serviceId in appointments
-    const counts = appointments.reduce((acc: any, app) => {
-       acc[app.serviceId] = (acc[app.serviceId] || 0) + 1;
-       return acc;
-    }, {});
-    
-    const sorted = [...services].sort((a, b) => {
-       const scoreA = counts[a.id] || 0;
-       const scoreB = counts[b.id] || 0;
-       return scoreB - scoreA;
-    });
-    
-    // Return top 2
-    return sorted.slice(0, 2);
-  }, [services, appointments]);
 
   const handleNext = () => setStep(s => s + 1);
   const handleBack = () => setStep(s => s - 1);
@@ -303,49 +247,12 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
         {/* STEP 1: SERVICE */}
         {step === 1 && (
           <div className="space-y-4">
-             {/* AI Recommendations */}
-             {aiRecommendedServices.length > 0 && (
-                <div className="mb-10 bg-gradient-to-br from-charcoal-800 to-charcoal-900/40 p-6 rounded-[32px] border border-primary-500/20">
-                  <div className="flex items-center gap-3 mb-6">
-                    <Sparkles className="text-primary-400" size={18} />
-                    <h4 className="text-sm font-bold text-primary-400 uppercase tracking-[0.2em]">{t('booking.recommended_for_you', 'Recommended for You')}</h4>
-                  </div>
-                  <div className="space-y-4">
-                    {aiRecommendedServices.map(service => (
-                      <button
-                        key={'rec_' + service.id}
-                        onClick={() => { setServiceId(service.id); handleNext(); }}
-                        className={cn(
-                          "w-full text-left bg-charcoal-800 p-5 rounded-[24px] border transition-all flex items-center gap-4 group",
-                          serviceId === service.id 
-                            ? "border-primary-400 bg-primary-400/5 shadow-2xl shadow-primary-900/20 scale-[1.02]" 
-                            : "border-primary-500/10 hover:border-primary-400/30 shadow-lg shadow-black/20"
-                        )}
-                      >
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-primary-600 to-secondary-500 flex items-center justify-center shrink-0 shadow-lg shadow-primary-900/40 group-hover:scale-110 transition-transform text-white">
-                          <Sparkles size={18} />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-lg font-serif font-medium text-white group-hover:text-primary-200 transition-colors leading-tight">{service.name}</h3>
-                          <div className="flex items-center gap-1.5 text-[10px] text-primary-400/80 mt-1 font-bold uppercase tracking-widest">
-                             {t('booking.popular_choice', 'Popular Choice')}
-                          </div>
-                        </div>
-                        <div className="text-right shrink-0">
-                          <p className="text-lg font-serif font-medium text-primary-400 leading-tight">{formatCurrency(service.price)}</p>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-             )}
-
              <div className="flex items-center gap-3 mb-6">
                 <Scissors className="text-charcoal-500" size={18} />
                 <h4 className="text-xs font-bold text-charcoal-500 uppercase tracking-[0.1em]">{t('booking.all_services', 'All Services')}</h4>
              </div>
 
-            {services.filter(s => !aiRecommendedServices.find(rec => rec.id === s.id)).map(service => (
+            {services.map(service => (
               <button
                 key={service.id}
                 onClick={() => { setServiceId(service.id); handleNext(); }}
@@ -452,44 +359,10 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
             <h3 className="text-center text-charcoal-400 mb-8 font-light tracking-wide text-lg">
               {t('booking.times_at', { date: format(parseISO(date), "dd 'de' MMMM", { locale: currentLocale }) })}
             </h3>
-            
-            {/* AI Suggested Times */}
-            {availableTimes.length > 0 && (
-               <div className="mb-10 bg-charcoal-900/40 p-6 rounded-[32px] border border-primary-500/20">
-                  <div className="flex items-center gap-3 mb-6 justify-center">
-                    <Sparkles className="text-primary-400" size={18} />
-                    <h4 className="text-sm font-bold text-primary-400 uppercase tracking-[0.2em]">{t('booking.ai_suggested', 'Suggested by AI')}</h4>
-                  </div>
-                  
-                  {loadingAiTimes ? (
-                    <div className="flex justify-center py-4">
-                      <div className="w-6 h-6 border-2 border-primary-500/30 border-t-primary-500 rounded-full animate-spin"></div>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
-                      {aiSuggestedTimes.map(t => (
-                        <button
-                          key={'ai_' + t}
-                          onClick={() => { setTime(t); handleNext(); }}
-                          className={cn(
-                            "py-4 rounded-[20px] border-2 font-mono text-lg font-medium transition-all group shadow-lg",
-                            time === t 
-                              ? "border-primary-500 bg-gradient-to-br from-primary-500 to-secondary-500 text-white shadow-primary-900/40 scale-110" 
-                              : "bg-charcoal-800 border-primary-400/30 text-primary-300 hover:border-primary-400 hover:text-white"
-                          )}
-                        >
-                          {t}h
-                        </button>
-                      ))}
-                    </div>
-                  )}
-               </div>
-            )}
 
-            <div className="h-px w-20 bg-charcoal-700 mx-auto mt-4 mb-10"></div>
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
               {availableTimes.length > 0 ? (
-                availableTimes.filter(t => !aiSuggestedTimes.includes(t)).map(t => (
+                availableTimes.map(t => (
                   <button
                     key={t}
                     onClick={() => { setTime(t); handleNext(); }}
