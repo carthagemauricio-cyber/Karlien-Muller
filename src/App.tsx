@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { AppProvider } from './store';
 import { Sidebar, MobileNav } from './components/Navigation';
@@ -9,24 +9,11 @@ import { Professionals } from './pages/Professionals';
 import { ServicesPage } from './pages/Services';
 import { CalendarView } from './pages/CalendarView';
 import { Landing } from './pages/Landing';
-import { TeamLogin } from './pages/TeamLogin';
 import { ArrowLeft } from 'lucide-react';
-import { auth } from './lib/firebase';
-import { onAuthStateChanged, User } from 'firebase/auth';
 
 function AppContent() {
   const [appMode, setAppMode] = useState<'landing' | 'client' | 'admin'>('landing');
   const [currentView, setCurrentView] = useState('dashboard');
-  const [user, setUser] = useState<User | null>(null);
-  const [authChecking, setAuthChecking] = useState(true);
-
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (u) => {
-      setUser(u);
-      setAuthChecking(false);
-    });
-    return () => unsub();
-  }, []);
 
   if (appMode === 'landing') {
     return (
@@ -83,20 +70,7 @@ function AppContent() {
     );
   }
 
-  if (appMode === 'admin' && authChecking) {
-    return (
-      <div className="h-screen w-full flex items-center justify-center bg-charcoal-900 border-charcoal-800">
-        <div className="w-8 h-8 rounded-full border-2 border-primary-500 border-t-transparent animate-spin" />
-      </div>
-    );
-  }
-
-  if (appMode === 'admin' && !user) {
-    return <TeamLogin onBack={() => setAppMode('landing')} onLoginSuccess={() => {}} />;
-  }
-
   const handleSignOut = () => {
-    auth.signOut();
     setAppMode('landing');
   };
 

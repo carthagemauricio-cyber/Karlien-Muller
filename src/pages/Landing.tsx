@@ -6,9 +6,18 @@ import { LanguageSwitcher } from '../components/LanguageSwitcher';
 
 export const Landing = ({ onSelectMode }: { onSelectMode: (mode: 'client' | 'admin') => void }) => {
   const { t } = useTranslation();
+  const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
+  const [password, setPassword] = useState('');
   
-  const handleAdminAuth = () => {
-    onSelectMode('admin');
+  const handleAdminAuth = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === '123456') {
+      onSelectMode('admin');
+      toast.success(t('auth.success', 'Acesso concedido'));
+    } else {
+      toast.error(t('auth.error', 'Palavra-passe incorreta'));
+      setPassword('');
+    }
   };
 
   return (
@@ -67,7 +76,7 @@ export const Landing = ({ onSelectMode }: { onSelectMode: (mode: 'client' | 'adm
             {t('landing.access_prompt')}
           </p>
 
-          <div className="space-y-5">
+          <div className="space-y-5 w-full">
             {/* Client Option */}
             <button 
               onClick={() => onSelectMode('client')}
@@ -86,21 +95,65 @@ export const Landing = ({ onSelectMode }: { onSelectMode: (mode: 'client' | 'adm
             </button>
 
             {/* Admin Option */}
-            <button 
-              onClick={handleAdminAuth}
-              className="w-full group bg-charcoal-800/30 p-6 rounded-[32px] border border-transparent hover:border-secondary-600 transition-all flex items-center gap-6 text-left focus:outline-none"
-            >
-              <div className="w-16 h-16 rounded-full bg-charcoal-700/50 text-secondary-300 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                <UserCog size={32} />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-serif font-medium text-charcoal-100 mb-1">{t('landing.i_am_team')}</h3>
-                <p className="text-sm text-charcoal-500 font-light">{t('landing.team_desc')}</p>
-              </div>
-              <div className="text-charcoal-700 group-hover:text-secondary-500 group-hover:translate-x-1 transition-all">
-                <ArrowRight size={24} />
-              </div>
-            </button>
+            {!showPasswordPrompt ? (
+              <button 
+                onClick={() => setShowPasswordPrompt(true)}
+                className="w-full group bg-charcoal-800/30 p-6 rounded-[32px] border border-transparent hover:border-secondary-600 transition-all flex items-center gap-6 text-left focus:outline-none"
+              >
+                <div className="w-16 h-16 rounded-full bg-charcoal-700/50 text-secondary-300 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                  <UserCog size={32} />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-serif font-medium text-charcoal-100 mb-1">{t('landing.i_am_team')}</h3>
+                  <p className="text-sm text-charcoal-500 font-light">{t('landing.team_desc')}</p>
+                </div>
+                <div className="text-charcoal-700 group-hover:text-secondary-500 group-hover:translate-x-1 transition-all">
+                  <ArrowRight size={24} />
+                </div>
+              </button>
+            ) : (
+              <form onSubmit={handleAdminAuth} className="w-full bg-charcoal-800/50 p-6 rounded-[32px] border border-secondary-600 shadow-sm transition-all focus:outline-none backdrop-blur-sm animate-in fade-in slide-in-from-bottom-4">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-charcoal-700/50 text-secondary-300 flex items-center justify-center shrink-0">
+                    <Lock size={24} />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-serif font-medium text-charcoal-100">{t('auth.admin_access', 'Acesso Restrito')}</h3>
+                    <p className="text-xs text-charcoal-500 font-light">{t('auth.enter_password', 'Insira a palavra-passe para continuar')}</p>
+                  </div>
+                </div>
+                
+                <div className="relative mb-4">
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Palavra-passe"
+                    className="w-full bg-charcoal-900 border border-charcoal-600 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-secondary-500 transition-colors"
+                    autoFocus
+                  />
+                </div>
+                
+                <div className="flex items-center gap-3">
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      setShowPasswordPrompt(false);
+                      setPassword('');
+                    }}
+                    className="flex-1 px-4 py-3 rounded-2xl border border-charcoal-600 text-charcoal-300 font-medium hover:bg-charcoal-700 transition-colors"
+                  >
+                    {t('common.cancel', 'Cancelar')}
+                  </button>
+                  <button 
+                    type="submit"
+                    className="flex-1 px-4 py-3 rounded-2xl bg-gradient-to-r from-secondary-500 to-primary-500 text-white font-medium shadow-lg hover:shadow-primary-500/25 transition-all text-center"
+                  >
+                    {t('common.enter', 'Entrar')}
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
           
           <div className="mt-20 text-center lg:text-left text-[10px] font-medium text-charcoal-600 uppercase tracking-[0.4em]">
