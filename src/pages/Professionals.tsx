@@ -135,10 +135,10 @@ export const Professionals = () => {
           onSave={(prof) => {
             if (editingProf === 'new') {
               addProfessional(prof);
-              toast.success(t('management.removed_success')); // Using generic success
+              toast.success(t('management.professional_create') + ' concluído!');
             } else {
               updateProfessional(prof);
-              toast.success(t('management.removed_success'));
+              toast.success(t('management.save') + ' concluído!');
             }
             setEditingProf(null);
           }}

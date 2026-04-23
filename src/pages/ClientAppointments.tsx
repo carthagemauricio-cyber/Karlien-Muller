@@ -6,28 +6,27 @@ import { ptBR, enUS } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
 
 export const ClientAppointments = () => {
-  const { appointments, services, professionals } = useAppStore();
+  const { services, professionals, searchAppointments } = useAppStore();
   const { t, i18n } = useTranslation();
   const [nameSearch, setNameSearch] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
+  const [myAppointments, setMyAppointments] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
   
   const currentLocale = i18n.language.startsWith('pt') ? ptBR : enUS;
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (nameSearch.trim()) {
+      setIsSearching(true);
+      const results = await searchAppointments(nameSearch);
+      setMyAppointments(
+        results.sort((a, b) => (b.createdAt ? new Date(b.createdAt).getTime() : 0) - (a.createdAt ? new Date(a.createdAt).getTime() : 0))
+      );
       setHasSearched(true);
+      setIsSearching(false);
     }
   };
-
-  const myAppointments = appointments
-    .filter(app => {
-        const normalizedSearch = nameSearch.trim().toLowerCase();
-        const normalizedApp = app.clientName.trim().toLowerCase();
-        // Allow partial matches or exact matches
-        return normalizedApp.includes(normalizedSearch);
-    })
-    .sort((a, b) => (b.createdAt ? new Date(b.createdAt).getTime() : 0) - (a.createdAt ? new Date(a.createdAt).getTime() : 0));
 
   const getStatusBadge = (status: string) => {
     switch(status) {
@@ -67,13 +66,14 @@ export const ClientAppointments = () => {
                 <button
                     type="submit"
                     className="bg-primary-600 text-white px-8 font-bold uppercase tracking-widest text-[10px] hover:bg-primary-500 transition-all active:scale-95 font-ui"
+                    disabled={isSearching}
                 >
-                    {t('my_bookings.search_btn')}
+                    {isSearching ? <SearchIcon size={16} className="animate-spin" /> : t('my_bookings.search_btn')}
                 </button>
             </div>
         </form>
 
-        {hasSearched && nameSearch.trim() !== '' && (
+        {hasSearched && nameSearch.trim() !== '' && !isSearching && (
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-8 duration-500">
                 {myAppointments.length > 0 ? (
                     myAppointments.map(app => {

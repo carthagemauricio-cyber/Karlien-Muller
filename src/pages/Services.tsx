@@ -86,10 +86,10 @@ export const ServicesPage = () => {
           onSave={(service) => {
             if (editingService === 'new') {
               addService(service);
-              toast.success(t('management.removed_success'));
+              toast.success(t('management.service_create') + ' concluído!');
             } else {
               updateService(service);
-              toast.success(t('management.removed_success'));
+              toast.success(t('management.save') + ' concluído!');
             }
             setEditingService(null);
           }}

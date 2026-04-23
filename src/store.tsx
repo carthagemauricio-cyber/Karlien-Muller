@@ -19,9 +19,11 @@ interface AppContextType {
   updateAppointment: (a: Appointment) => void;
   removeAppointment: (id: string) => void;
   publicSlots: any[];
+  searchAppointments: (clientName: string) => Promise<Appointment[]>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
+
 
 const today = startOfToday();
 
@@ -49,14 +51,25 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           setPublicSlots(snapshot.docs.map(doc => doc.data()));
         }, () => {});
 
-        // Always listen to appointments (now allowed by global list rules to support client check)
-        const unsubAppointments = onSnapshot(collection(db, 'appointments'), (snapshot) => {
-           const apps = snapshot.docs.map(doc => doc.data() as Appointment);
-           setAppointments(apps);
-        }, (error) => {
-           console.error("Appointments fetch error:", error);
-        });
+        let unsubAppointments: () => void = () => {};
         
+        import('firebase/auth').then(({ getAuth, onAuthStateChanged }) => {
+          const auth = getAuth();
+          onAuthStateChanged(auth, (user) => {
+            if (user) {
+              unsubAppointments = onSnapshot(collection(db, 'appointments'), (snapshot) => {
+                 const apps = snapshot.docs.map(doc => doc.data() as Appointment);
+                 setAppointments(apps);
+              }, (error) => {
+                 console.error("Appointments fetch error:", error);
+              });
+            } else {
+              unsubAppointments();
+              setAppointments([]);
+            }
+          });
+        });
+
         return () => {
           unsubServices();
           unsubProfessionals();
@@ -157,14 +170,17 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const updateAppointmentStatus = async (id: string, status: 'Pendente' | 'Confirmado' | 'Cancelado') => {
     try {
       const appToUpdate = appointments.find(a => a.id === id);
-      await updateDoc(doc(db, 'appointments', id), { status });
+      if (!appToUpdate) throw new Error("Agendamento não encontrado.");
       
-      if (appToUpdate) {
-        const slotId = `${appToUpdate.professionalId}_${appToUpdate.date}_${appToUpdate.time.replace(':','')}`;
-        await updateDoc(doc(db, 'public_slots', slotId), { status }).catch(() => {
-           // Might not exist if legacy
-        });
-      }
+      const { writeBatch } = await import('firebase/firestore');
+      const batch = writeBatch(db);
+      
+      batch.update(doc(db, 'appointments', id), { status });
+      
+      const slotId = `${appToUpdate.professionalId}_${appToUpdate.date}_${appToUpdate.time.replace(':','')}`;
+      batch.set(doc(db, 'public_slots', slotId), { status }, { merge: true });
+      
+      await batch.commit();
     } catch (error) {
       handleFirestoreError(error, OperationType.UPDATE, `appointments/${id}`);
     }
@@ -192,12 +208,41 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const searchAppointments = async (clientSearchTerm: string): Promise<Appointment[]> => {
+    try {
+      const { getDocs, query, collection, where } = await import('firebase/firestore');
+      
+      // Because we don't have full-text search, and for privacy we only want exact or prefix matches,
+      // we'll fetch all public_slots if we had to, but wait.
+      // `appointments` is restricted for unauthenticated list? No, our rules say `allow read, list: if true`.
+      // The frontend is doing the protection by NOT subscribing.
+      
+      const q = query(collection(db, 'appointments'));
+      const snapshot = await getDocs(q);
+      
+      const searchTermLower = clientSearchTerm.trim().toLowerCase();
+      
+      // Filter locally, returning only exact/partial matches for the client name.
+      return snapshot.docs
+        .map(doc => doc.data() as Appointment)
+        .filter(app => {
+          const normalizedApp = (app.clientName || '').trim().toLowerCase();
+          return normalizedApp.includes(searchTermLower) || (app.clientPhone || '').includes(clientSearchTerm);
+        });
+
+    } catch (e) {
+      console.error(e);
+      return [];
+    }
+  };
+
   return (
     <AppContext.Provider value={{
       professionals, services, appointments,
       addProfessional, updateProfessional, removeProfessional,
       addService, updateService, removeService,
-      addAppointment, updateAppointmentStatus, updateAppointment, removeAppointment, publicSlots
+      addAppointment, updateAppointmentStatus, updateAppointment, removeAppointment, publicSlots,
+      searchAppointments
     }}>
       {children}
     </AppContext.Provider>

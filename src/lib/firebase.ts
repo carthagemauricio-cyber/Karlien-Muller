@@ -1,12 +1,20 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, getDoc, doc } from 'firebase/firestore';
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import firebaseConfig from '../../firebase-applet-config.json'; 
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 
+export const auth = getAuth(app);
+export const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
+  prompt: 'select_account'
+});
+
 export enum OperationType {
   CREATE = 'create',
+
   UPDATE = 'update',
   DELETE = 'delete',
   LIST = 'list',
@@ -21,20 +29,30 @@ interface FirestoreErrorInfo {
   authInfo: any;
 }
 
+import toast from 'react-hot-toast';
+
 export function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
+  const errorMessage = error instanceof Error ? error.message : String(error);
+  
   const errInfo: FirestoreErrorInfo = {
-    error: error instanceof Error ? error.message : String(error),
+    error: errorMessage,
     authInfo: {
-      userId: 'anonymous',
-      email: 'anonymous',
-      emailVerified: false,
-      isAnonymous: true,
+      userId: auth.currentUser?.uid || 'anonymous',
+      email: auth.currentUser?.email || 'anonymous',
+      emailVerified: auth.currentUser?.emailVerified || false,
+      isAnonymous: auth.currentUser?.isAnonymous || true,
     },
     operationType,
     path
   };
-  console.error('Firestore Error: ', JSON.stringify(errInfo));
-  throw new Error(JSON.stringify(errInfo));
+  
+  console.error('Firestore Error: ', errInfo);
+  
+  if (errorMessage.includes('Missing or insufficient permissions')) {
+    toast.error('Erro de permissão: Você precisa estar logado como administrador para realizar esta ação.', { duration: 5000 });
+  } else {
+    toast.error(`Erro de sistema: ${errorMessage}`, { duration: 5000 });
+  }
 }
 
 // Quick connection test

@@ -24,8 +24,11 @@ export const Dashboard = () => {
 
   const filteredAppointments = useMemo(() => {
     return appointments.filter((app: any) => {
-      const matchesSearch = app.clientName.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                            app.clientPhone.includes(searchTerm);
+      const safeName = (app.clientName || '').toLowerCase();
+      const safePhone = (app.clientPhone || '');
+      const searchLower = searchTerm.toLowerCase();
+      
+      const matchesSearch = safeName.includes(searchLower) || safePhone.includes(searchTerm);
       const matchesStatus = statusFilter === 'all' || app.status === statusFilter;
       const matchesDate = !dateFilter || app.date === dateFilter;
       

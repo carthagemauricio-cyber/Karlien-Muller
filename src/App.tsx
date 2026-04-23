@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { AppProvider } from './store';
 import { Sidebar, MobileNav } from './components/Navigation';
@@ -9,17 +9,31 @@ import { Professionals } from './pages/Professionals';
 import { ServicesPage } from './pages/Services';
 import { CalendarView } from './pages/CalendarView';
 import { Landing } from './pages/Landing';
+import { TeamLogin } from './pages/TeamLogin';
 import { ArrowLeft } from 'lucide-react';
+import { auth } from './lib/firebase';
+import { onAuthStateChanged, User } from 'firebase/auth';
 
 function AppContent() {
   const [appMode, setAppMode] = useState<'landing' | 'client' | 'admin'>('landing');
   const [currentView, setCurrentView] = useState('dashboard');
+  const [user, setUser] = useState<User | null>(null);
+  const [authChecking, setAuthChecking] = useState(true);
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (u) => {
+      setUser(u);
+      setAuthChecking(false);
+    });
+    return () => unsub();
+  }, []);
 
   if (appMode === 'landing') {
     return <Landing onSelectMode={setAppMode} />;
   }
 
   if (appMode === 'client') {
+
     return (
       <div className="flex flex-col min-h-screen bg-charcoal-900 font-sans text-charcoal-100">
         <header className="bg-charcoal-800/80 backdrop-blur-xl border-b border-charcoal-700 p-4 md:px-8 sticky top-0 z-10 flex justify-between items-center shadow-2xl">
@@ -65,12 +79,30 @@ function AppContent() {
     );
   }
 
+  if (appMode === 'admin' && authChecking) {
+    return (
+      <div className="h-screen w-full flex items-center justify-center bg-charcoal-900 border-charcoal-800">
+        <div className="w-8 h-8 rounded-full border-2 border-primary-500 border-t-transparent animate-spin" />
+      </div>
+    );
+  }
+
+  if (appMode === 'admin' && !user) {
+    return <TeamLogin onBack={() => setAppMode('landing')} onLoginSuccess={() => {}} />;
+  }
+
+  const handleSignOut = () => {
+    auth.signOut();
+    setAppMode('landing');
+  };
+
   return (
     <div className="flex h-screen bg-charcoal-900 overflow-hidden font-sans text-charcoal-100">
       <Sidebar 
+
         currentView={currentView} 
         setCurrentView={setCurrentView} 
-        onBackToLanding={() => setAppMode('landing')}
+        onBackToLanding={handleSignOut}
       />
       
       <main className="flex-1 overflow-y-auto w-full relative h-[100dvh]">
@@ -86,7 +118,7 @@ function AppContent() {
       <MobileNav 
         currentView={currentView} 
         setCurrentView={setCurrentView} 
-        onBackToLanding={() => setAppMode('landing')}
+        onBackToLanding={handleSignOut}
       />
     </div>
   );
