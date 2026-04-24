@@ -71,6 +71,9 @@ function AppContent() {
   }
 
   const handleSignOut = () => {
+    import('./lib/firebase').then(({ auth }) => {
+      import('firebase/auth').then(({ signOut }) => signOut(auth));
+    });
     setAppMode('landing');
   };
 

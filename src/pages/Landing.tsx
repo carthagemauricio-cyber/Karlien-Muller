@@ -3,17 +3,24 @@ import { Scissors, CalendarHeart, UserCog, ArrowRight, X, Lock } from 'lucide-re
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
+import { auth } from '../lib/firebase';
+import { signInAnonymously } from 'firebase/auth';
 
 export const Landing = ({ onSelectMode }: { onSelectMode: (mode: 'client' | 'admin') => void }) => {
   const { t } = useTranslation();
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
   const [password, setPassword] = useState('');
   
-  const handleAdminAuth = (e: React.FormEvent) => {
+  const handleAdminAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password === '123456') {
-      onSelectMode('admin');
-      toast.success(t('auth.success', 'Acesso concedido'));
+      try {
+        await signInAnonymously(auth);
+        onSelectMode('admin');
+        toast.success(t('auth.success', 'Acesso concedido'));
+      } catch (err) {
+        toast.error(t('auth.db_error', 'Erro ao autenticar no banco de dados'));
+      }
     } else {
       toast.error(t('auth.error', 'Palavra-passe incorreta'));
       setPassword('');
@@ -128,7 +135,7 @@ export const Landing = ({ onSelectMode }: { onSelectMode: (mode: 'client' | 'adm
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Palavra-passe"
+                    placeholder={t('auth.password_placeholder', 'Palavra-passe')}
                     className="w-full bg-charcoal-900 border border-charcoal-600 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-secondary-500 transition-colors"
                     autoFocus
                   />

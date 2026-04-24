@@ -135,10 +135,10 @@ export const Professionals = () => {
           onSave={(prof) => {
             if (editingProf === 'new') {
               addProfessional(prof);
-              toast.success(t('management.professional_create') + ' concluído!');
+              toast.success(t('management.completed', 'Concluído com sucesso!'));
             } else {
               updateProfessional(prof);
-              toast.success(t('management.save') + ' concluído!');
+              toast.success(t('management.completed', 'Concluído com sucesso!'));
             }
             setEditingProf(null);
           }}
@@ -287,7 +287,7 @@ const ProfessionalModal = ({ prof, onClose, onSave }: { prof: Professional | nul
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full px-6 py-4 bg-charcoal-900 border border-charcoal-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400/30 transition-all font-serif text-xl text-white placeholder:text-charcoal-700"
-              placeholder="ex: Marta Silva"
+              placeholder={t('management.name_placeholder', 'ex: Marta Silva')}
             />
           </div>
           

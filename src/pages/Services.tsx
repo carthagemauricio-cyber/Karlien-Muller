@@ -86,10 +86,10 @@ export const ServicesPage = () => {
           onSave={(service) => {
             if (editingService === 'new') {
               addService(service);
-              toast.success(t('management.service_create') + ' concluído!');
+              toast.success(t('management.completed', 'Concluído com sucesso!'));
             } else {
               updateService(service);
-              toast.success(t('management.save') + ' concluído!');
+              toast.success(t('management.completed', 'Concluído com sucesso!'));
             }
             setEditingService(null);
           }}
@@ -165,7 +165,7 @@ const ServiceModal = ({ service, onClose, onSave }: { service: Service | null, o
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full px-6 py-4 bg-charcoal-900 border border-charcoal-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400/30 transition-all font-serif text-xl text-white placeholder-charcoal-700"
-              placeholder="ex: Madeixas"
+              placeholder={t('management.service_name_placeholder', 'ex: Madeixas')}
             />
           </div>
           

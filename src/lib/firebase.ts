@@ -31,6 +31,8 @@ interface FirestoreErrorInfo {
 
 import toast from 'react-hot-toast';
 
+import i18n from '../i18n/config';
+
 export function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
   const errorMessage = error instanceof Error ? error.message : String(error);
   
@@ -49,9 +51,9 @@ export function handleFirestoreError(error: unknown, operationType: OperationTyp
   console.error('Firestore Error: ', errInfo);
   
   if (errorMessage.includes('Missing or insufficient permissions')) {
-    toast.error('Erro de permissão: Você precisa estar logado como administrador para realizar esta ação.', { duration: 5000 });
+    toast.error(i18n.t('common.permission_error', 'Erro de permissão: Você precisa estar logado como administrador para realizar esta ação.'), { duration: 5000 });
   } else {
-    toast.error(`Erro de sistema: ${errorMessage}`, { duration: 5000 });
+    toast.error(i18n.t('common.system_error', 'Erro de sistema: {{error}}', { error: errorMessage }), { duration: 5000 });
   }
 }
 
