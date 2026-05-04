@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { Appointment, Professional, Service } from './types';
 import { addDays, format, startOfToday } from 'date-fns';
 import { db, handleFirestoreError, OperationType } from './lib/firebase';
-import { collection, onSnapshot, doc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, onSnapshot, doc, setDoc, updateDoc, deleteDoc, writeBatch } from 'firebase/firestore';
 
 interface AppContextType {
   professionals: Professional[];
@@ -38,41 +38,35 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [isAdminMode, setAdminMode] = useState(false);
 
   useEffect(() => {
-    import('./lib/firebase').then(({ db }) => {
-      import('firebase/firestore').then(({ collection, onSnapshot }) => {
-        // Services
-        const unsubServices = onSnapshot(collection(db, 'services'), (snapshot) => {
-          setServices(snapshot.docs.map(d => d.data() as Service));
-        });
-
-        // Professionals
-        const unsubProfessionals = onSnapshot(collection(db, 'professionals'), (snapshot) => {
-          setProfessionals(snapshot.docs.map(d => d.data() as Professional));
-        });
-
-        // Always listen to public slots (safe for all)
-        const unsubPublic = onSnapshot(collection(db, 'public_slots'), (snapshot) => {
-          setPublicSlots(snapshot.docs.map(doc => doc.data()));
-        }, () => {});
-
-        return () => {
-          unsubServices();
-          unsubProfessionals();
-          unsubPublic();
-        };
-      });
+    // Services
+    const unsubServices = onSnapshot(collection(db, 'services'), (snapshot) => {
+      setServices(snapshot.docs.map(d => d.data() as Service));
     });
+
+    // Professionals
+    const unsubProfessionals = onSnapshot(collection(db, 'professionals'), (snapshot) => {
+      setProfessionals(snapshot.docs.map(d => d.data() as Professional));
+    });
+
+    // Always listen to public slots (safe for all)
+    const unsubPublic = onSnapshot(collection(db, 'public_slots'), (snapshot) => {
+      setPublicSlots(snapshot.docs.map(doc => doc.data()));
+    }, () => {});
+
+    return () => {
+      unsubServices();
+      unsubProfessionals();
+      unsubPublic();
+    };
   }, []);
 
   useEffect(() => {
     let unsubAppointments: () => void = () => {};
     
     if (isAdminMode) {
-      import('./lib/firebase').then(({ db }) => {
-        import('firebase/firestore').then(({ collection, onSnapshot }) => {
-          let isInitialLoad = true;
-          unsubAppointments = onSnapshot(collection(db, 'appointments'), (snapshot) => {
-             const apps = snapshot.docs.map(doc => doc.data() as Appointment);
+      let isInitialLoad = true;
+      unsubAppointments = onSnapshot(collection(db, 'appointments'), (snapshot) => {
+         const apps = snapshot.docs.map(doc => doc.data() as Appointment);
              setAppointments(apps);
              
              if (!isInitialLoad) {
@@ -93,8 +87,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           }, (error) => {
              console.error("Appointments fetch error:", error);
           });
-        });
-      });
     } else {
       setAppointments([]);
     }
@@ -196,7 +188,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const appToUpdate = appointments.find(a => a.id === id);
       if (!appToUpdate) throw new Error("Agendamento não encontrado.");
       
-      const { writeBatch } = await import('firebase/firestore');
       const batch = writeBatch(db);
       
       batch.update(doc(db, 'appointments', id), { status });
@@ -234,8 +225,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   const searchAppointments = async (clientSearchTerm: string): Promise<Appointment[]> => {
     try {
-      const { getDocs, query, collection, where } = await import('firebase/firestore');
-      
       // Because we don't have full-text search, and for privacy we only want exact or prefix matches,
       // we'll fetch all public_slots if we had to, but wait.
       // `appointments` is restricted for unauthenticated list? No, our rules say `allow read, list: if true`.
@@ -264,12 +253,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     let isCancelled = false;
     let isInitialLoad = true;
     
-    import('firebase/firestore').then(({ collection, query, where, onSnapshot }) => {
-      if (isCancelled) return;
-      
-      const q = query(collection(db, 'appointments'), where('clientName', '==', clientSearchTerm.trim()));
-      
-      internalUnsub = onSnapshot(q, (snapshot) => {
+    if (isCancelled) return () => {};
+    
+    const q = query(collection(db, 'appointments'), where('clientName', '==', clientSearchTerm.trim()));
+    
+    internalUnsub = onSnapshot(q, (snapshot) => {
         if (!isInitialLoad) {
           snapshot.docChanges().forEach(change => {
             if (!change.doc.metadata.hasPendingWrites) {
@@ -288,7 +276,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         console.error("Search error: ", error);
         callback([]);
       });
-    });
 
     return () => {
       isCancelled = true;

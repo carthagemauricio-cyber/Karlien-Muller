@@ -60,13 +60,15 @@ export function handleFirestoreError(error: unknown, operationType: OperationTyp
     path
   };
   
-  console.error('Firestore Error: ', errInfo);
+  console.error('Firestore Error: ', JSON.stringify(errInfo));
   
   if (errorMessage.includes('Missing or insufficient permissions')) {
     toast.error(i18n.t('common.permission_error', 'Erro de permissão: Você precisa estar logado como administrador para realizar esta ação.'), { duration: 5000 });
   } else {
-    toast.error(i18n.t('common.system_error', 'Erro de sistema: {{error}}', { error: errorMessage }), { duration: 5000 });
+    toast.error(i18n.t('common.system_error', 'Erro de sistema.'), { duration: 5000 });
   }
+  
+  throw new Error(JSON.stringify(errInfo));
 }
 
 // Quick connection test
