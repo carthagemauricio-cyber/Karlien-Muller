@@ -123,8 +123,8 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
 
     const newAppointment: Appointment = {
       id: `app_${Date.now()}`,
-      clientName,
-      clientPhone,
+      clientName: clientName.trim(),
+      clientPhone: clientPhone.trim(),
       serviceId,
       professionalId,
       date,
