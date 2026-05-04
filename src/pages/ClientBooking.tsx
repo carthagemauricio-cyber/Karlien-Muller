@@ -169,15 +169,9 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
           <h2 className="text-4xl font-serif text-white mb-4 tracking-tight">{t('booking.success_title')}</h2>
           <div className="h-0.5 w-16 bg-primary-400 mx-auto mb-6"></div>
           <p className="text-charcoal-300 mb-8 leading-relaxed px-2 text-base font-light">
-            {t('booking.success_message', {
-              name: clientName,
-              service: serviceName.toLowerCase(),
-              professional: profName,
-              date: formattedDate,
-              time: time
-            })}
+            Seu agendamento foi enviado e está aguardando confirmação.
             <br/><br/>
-            <span className="text-secondary-400 font-medium">{t('booking.success_followup')}</span>
+            <span className="text-secondary-400 font-medium">Você pode acompanhar o status na aba Meus Agendamentos.</span>
           </p>
           
           <div className="w-full space-y-4 md:block hidden">

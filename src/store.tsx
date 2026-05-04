@@ -241,18 +241,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       // `appointments` is restricted for unauthenticated list? No, our rules say `allow read, list: if true`.
       // The frontend is doing the protection by NOT subscribing.
       
-      const q = query(collection(db, 'appointments'));
+      const q = query(collection(db, 'appointments'), where('clientName', '==', clientSearchTerm.trim()));
       const snapshot = await getDocs(q);
       
-      const searchTermLower = clientSearchTerm.trim().toLowerCase();
-      
-      // Filter locally, returning only exact/partial matches for the client name.
-      return snapshot.docs
-        .map(doc => doc.data() as Appointment)
-        .filter(app => {
-          const normalizedApp = (app.clientName || '').trim().toLowerCase();
-          return normalizedApp.includes(searchTermLower) || (app.clientPhone || '').includes(clientSearchTerm);
-        });
+      return snapshot.docs.map(doc => doc.data() as Appointment);
 
     } catch (e) {
       console.error(e);
@@ -272,18 +264,17 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     let isCancelled = false;
     let isInitialLoad = true;
     
-    import('firebase/firestore').then(({ collection, onSnapshot }) => {
+    import('firebase/firestore').then(({ collection, query, where, onSnapshot }) => {
       if (isCancelled) return;
       
-      internalUnsub = onSnapshot(collection(db, 'appointments'), (snapshot) => {
-        const searchTermLower = clientSearchTerm.trim().toLowerCase();
-        
+      const q = query(collection(db, 'appointments'), where('clientName', '==', clientSearchTerm.trim()));
+      
+      internalUnsub = onSnapshot(q, (snapshot) => {
         if (!isInitialLoad) {
           snapshot.docChanges().forEach(change => {
             if (!change.doc.metadata.hasPendingWrites) {
               const data = change.doc.data() as Appointment;
-              const matchesSearch = (data.clientName?.toLowerCase().includes(searchTermLower) || data.clientPhone?.includes(clientSearchTerm));
-              if (matchesSearch && change.type === 'modified') {
+              if (change.type === 'modified') {
                 toast(`O status do seu agendamento foi atualizado para: ${data.status}`, { icon: '🔔' });
               }
             }
@@ -291,12 +282,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         }
         isInitialLoad = false;
 
-        const results = snapshot.docs
-          .map(doc => doc.data() as Appointment)
-          .filter(app => {
-            const normalizedApp = (app.clientName || '').trim().toLowerCase();
-            return normalizedApp.includes(searchTermLower) || (app.clientPhone || '').includes(clientSearchTerm);
-          });
+        const results = snapshot.docs.map(doc => doc.data() as Appointment);
         callback(results);
       }, (error) => {
         console.error("Search error: ", error);

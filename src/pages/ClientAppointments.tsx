@@ -149,7 +149,7 @@ export const ClientAppointments = () => {
                     })
                 ) : (
                     <div className="text-center py-20 bg-charcoal-800/50 rounded-[40px] border border-charcoal-700 border-dashed">
-                        <p className="text-charcoal-400 text-lg font-light">{t('my_bookings.no_bookings')}</p>
+                        <p className="text-charcoal-400 text-lg font-light">Nenhum agendamento encontrado para este nome.</p>
                     </div>
                 )}
             </div>
