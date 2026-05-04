@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Users, Scissors, CalendarPlus, CalendarDays, LogOut } from 'lucide-react';
+import { Home, Users, Scissors, CalendarPlus, CalendarDays, LogOut, Settings as SettingsIcon } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from './LanguageSwitcher';
@@ -94,6 +94,15 @@ export const Sidebar = ({
           isActive={currentView === 'services'} 
           onClick={() => setCurrentView('services')} 
         />
+        <div className="mt-4 mb-2 px-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-charcoal-500">
+          {t('navigation.system', 'Sistema')}
+        </div>
+        <NavItem 
+          icon={<SettingsIcon size={20} />} 
+          label={t('navigation.settings', 'Configurações')} 
+          isActive={currentView === 'settings'} 
+          onClick={() => setCurrentView('settings')} 
+        />
       </nav>
 
       <div className="pt-6 border-t border-charcoal-700 mt-auto">
@@ -126,11 +135,12 @@ export const MobileNav = ({
     { id: 'calendar', icon: CalendarDays, label: t('navigation.agenda') },
     { id: 'book', icon: CalendarPlus, label: t('navigation.book_mobile', 'Agendar') },
     { id: 'professionals', icon: Users, label: t('navigation.team') },
+    { id: 'settings', icon: SettingsIcon, label: t('navigation.settings', 'Configurações') },
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 glass-panel border-t border-charcoal-700 bg-charcoal-800/90 p-2 pb-safe md:hidden backdrop-blur-md">
-      <div className="flex justify-around items-center relative">
+    <div className="fixed bottom-0 left-0 right-0 z-50 glass-panel border-t border-charcoal-700 bg-charcoal-800/90 p-2 pb-safe md:hidden backdrop-blur-md overflow-x-auto no-scrollbar">
+      <div className="flex justify-start min-w-max px-2 sm:justify-around items-center relative gap-2">
         {navItems.map((item) => {
           const isActive = currentView === item.id;
           const Icon = item.icon;

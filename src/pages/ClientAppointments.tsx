@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAppStore } from '../store';
-import { Search, Calendar, Clock, User, CheckCircle2, XCircle, SearchIcon } from 'lucide-react';
+import { Search, Calendar, Clock, User, CheckCircle2, XCircle, SearchIcon, Activity, CheckSquare } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
@@ -53,6 +53,10 @@ export const ClientAppointments = () => {
         return <span className="px-3 py-1.5 bg-emerald-500/10 text-emerald-400 rounded-full text-[10px] font-bold flex items-center gap-1.5 w-max border border-emerald-500/20 uppercase tracking-widest"><CheckCircle2 size={12}/> {t('common.confirm')}</span>;
       case 'Cancelado':
         return <span className="px-3 py-1.5 bg-rose-500/10 text-rose-400 rounded-full text-[10px] font-bold flex items-center gap-1.5 w-max border border-rose-500/20 uppercase tracking-widest"><XCircle size={12}/> {t('dashboard.cancel_btn')}</span>;
+      case 'Em Progresso':
+        return <span className="px-3 py-1.5 bg-blue-500/10 text-blue-400 rounded-full text-[10px] font-bold flex items-center gap-1.5 w-max border border-blue-500/20 uppercase tracking-widest"><Activity size={12}/> {t('common.in_progress', 'Em Progresso')}</span>;
+      case 'Concluído':
+        return <span className="px-3 py-1.5 bg-purple-500/10 text-purple-400 rounded-full text-[10px] font-bold flex items-center gap-1.5 w-max border border-purple-500/20 uppercase tracking-widest"><CheckSquare size={12}/> {t('common.completed', 'Concluído')}</span>;
       default:
         return <span className="px-3 py-1.5 bg-amber-500/10 text-amber-400 rounded-full text-[10px] font-bold flex items-center gap-1.5 w-max border border-amber-500/20 uppercase tracking-widest"><Clock size={12}/> {t('common.pending', 'Pendente')}</span>;
     }

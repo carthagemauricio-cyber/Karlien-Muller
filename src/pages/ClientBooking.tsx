@@ -115,6 +115,12 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
       return;
     }
 
+    const isDoubleBooked = publicSlots.some(slot => slot.professionalId === professionalId && slot.date === date && slot.time === time && slot.status !== 'Cancelado');
+    if (isDoubleBooked) {
+      toast.error('Este horário já foi reservado. Por favor, escolha outro.');
+      return;
+    }
+
     const newAppointment: Appointment = {
       id: `app_${Date.now()}`,
       clientName,

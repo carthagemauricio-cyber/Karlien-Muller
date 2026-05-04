@@ -3,7 +3,7 @@ import { useAppStore } from '../store';
 import { format, parseISO, isToday, isBefore, startOfToday } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
-import { Users, CalendarClock, TrendingUp, Search, Filter, CheckCircle2, XCircle, Clock, Scissors, User } from 'lucide-react';
+import { Users, CalendarClock, TrendingUp, Search, Filter, CheckCircle2, XCircle, Clock, Scissors, User, Activity, CheckSquare } from 'lucide-react';
 import { cn } from '../lib/utils';
 import toast from 'react-hot-toast';
 
@@ -41,7 +41,7 @@ export const Dashboard = () => {
     });
   }, [appointments, searchTerm, statusFilter, dateFilter]);
 
-  const handleStatusChange = async (id: string, newStatus: 'Pendente' | 'Confirmado' | 'Cancelado') => {
+  const handleStatusChange = async (id: string, newStatus: 'Pendente' | 'Confirmado' | 'Em Progresso' | 'Concluído' | 'Cancelado') => {
     updateAppointmentStatus(id, newStatus);
     toast.success(t('dashboard.status_changed', { status: newStatus }));
   };
@@ -57,6 +57,10 @@ export const Dashboard = () => {
         return <span className="px-2.5 py-1 bg-emerald-500/10 text-emerald-400 rounded-lg text-xs font-semibold flex items-center gap-1 w-max border border-emerald-500/20"><CheckCircle2 size={12}/> {t('common.confirm')}</span>;
       case 'Cancelado':
         return <span className="px-2.5 py-1 bg-rose-500/10 text-rose-400 rounded-lg text-xs font-semibold flex items-center gap-1 w-max border border-rose-500/20"><XCircle size={12}/> {t('dashboard.cancel_btn')}</span>;
+      case 'Em Progresso':
+        return <span className="px-2.5 py-1 bg-blue-500/10 text-blue-400 rounded-lg text-xs font-semibold flex items-center gap-1 w-max border border-blue-500/20"><Activity size={12}/> {t('common.in_progress', 'Em Progresso')}</span>;
+      case 'Concluído':
+        return <span className="px-2.5 py-1 bg-purple-500/10 text-purple-400 rounded-lg text-xs font-semibold flex items-center gap-1 w-max border border-purple-500/20"><CheckSquare size={12}/> {t('common.completed', 'Concluído')}</span>;
       default:
         return <span className="px-2.5 py-1 bg-amber-500/10 text-amber-400 rounded-lg text-xs font-semibold flex items-center gap-1 w-max border border-amber-500/20"><Clock size={12}/> {t('common.pending', 'Pendente')}</span>;
     }
@@ -135,6 +139,8 @@ export const Dashboard = () => {
               <option value="all">{t('dashboard.status_all')}</option>
               <option value="Pendente">{t('common.pending', 'Pendente')}</option>
               <option value="Confirmado">{t('common.confirm')}</option>
+              <option value="Em Progresso">{t('common.in_progress', 'Em Progresso')}</option>
+              <option value="Concluído">{t('common.completed', 'Concluído')}</option>
               <option value="Cancelado">{t('dashboard.cancel_btn')}</option>
             </select>
           </div>
@@ -194,12 +200,28 @@ export const Dashboard = () => {
                      {app.status === 'Pendente' && (
                         <button 
                           onClick={() => handleStatusChange(app.id, 'Confirmado')}
-                          className="flex-1 py-3 bg-primary-600 text-white rounded-xl text-xs font-semibold hover:bg-primary-500 transition-all uppercase tracking-widest shadow-lg shadow-primary-900/20 font-ui"
+                          className="flex-1 py-3 bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 rounded-xl text-xs font-semibold hover:bg-emerald-600/30 transition-all uppercase tracking-widest shadow-lg shadow-emerald-900/10 font-ui"
                         >
-                          {t('dashboard.confirm_btn')}
+                          {t('dashboard.confirm_btn', 'Confirmar')}
                         </button>
                       )}
-                      {(app.status === 'Pendente' || app.status === 'Confirmado') && (
+                     {app.status === 'Confirmado' && (
+                        <button 
+                          onClick={() => handleStatusChange(app.id, 'Em Progresso')}
+                          className="flex-1 py-3 bg-blue-600/20 text-blue-400 border border-blue-500/30 rounded-xl text-xs font-semibold hover:bg-blue-600/30 transition-all uppercase tracking-widest shadow-lg shadow-blue-900/10 font-ui"
+                        >
+                          {t('common.start', 'Iniciar')}
+                        </button>
+                      )}
+                     {app.status === 'Em Progresso' && (
+                        <button 
+                          onClick={() => handleStatusChange(app.id, 'Concluído')}
+                          className="flex-1 py-3 bg-purple-600/20 text-purple-400 border border-purple-500/30 rounded-xl text-xs font-semibold hover:bg-purple-600/30 transition-all uppercase tracking-widest shadow-lg shadow-purple-900/10 font-ui"
+                        >
+                          {t('common.finish', 'Finalizar')}
+                        </button>
+                      )}
+                      {['Pendente', 'Confirmado', 'Em Progresso'].includes(app.status) && (
                         <button 
                           onClick={() => handleStatusChange(app.id, 'Cancelado')}
                           className="flex-1 py-3 bg-rose-500/10 text-rose-500 border border-rose-500/20 rounded-xl text-xs font-semibold hover:bg-rose-500/20 transition-all uppercase tracking-widest font-ui"
@@ -280,12 +302,28 @@ export const Dashboard = () => {
                           {app.status === 'Pendente' && (
                             <button 
                               onClick={() => handleStatusChange(app.id, 'Confirmado')}
-                              className="px-4 py-2 bg-primary-600 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-primary-500 transition-all shadow-md shadow-primary-900/20"
+                              className="px-4 py-2 bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-emerald-600/30 transition-all shadow-md shadow-emerald-900/10"
                             >
-                              {t('dashboard.confirm_btn')}
+                              {t('dashboard.confirm_btn', 'Confirmar')}
                             </button>
                           )}
-                          {(app.status === 'Pendente' || app.status === 'Confirmado') && (
+                          {app.status === 'Confirmado' && (
+                            <button 
+                              onClick={() => handleStatusChange(app.id, 'Em Progresso')}
+                              className="px-4 py-2 bg-blue-600/20 text-blue-400 border border-blue-500/30 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-blue-600/30 transition-all shadow-md shadow-blue-900/10"
+                            >
+                              {t('common.start', 'Iniciar')}
+                            </button>
+                          )}
+                          {app.status === 'Em Progresso' && (
+                            <button 
+                              onClick={() => handleStatusChange(app.id, 'Concluído')}
+                              className="px-4 py-2 bg-purple-600/20 text-purple-400 border border-purple-500/30 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-purple-600/30 transition-all shadow-md shadow-purple-900/10"
+                            >
+                              {t('common.finish', 'Finalizar')}
+                            </button>
+                          )}
+                          {['Pendente', 'Confirmado', 'Em Progresso'].includes(app.status) && (
                             <button 
                               onClick={() => handleStatusChange(app.id, 'Cancelado')}
                               className="px-4 py-2 bg-rose-500/10 text-rose-500 border border-rose-500/20 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-rose-500/20 transition-all"

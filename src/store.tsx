@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { Appointment, Professional, Service } from './types';
 import { addDays, format, startOfToday } from 'date-fns';
 import { db, handleFirestoreError, OperationType } from './lib/firebase';
@@ -15,12 +16,13 @@ interface AppContextType {
   updateService: (s: Service) => void;
   removeService: (id: string) => void;
   addAppointment: (a: Appointment) => void;
-  updateAppointmentStatus: (id: string, status: 'Pendente' | 'Confirmado' | 'Cancelado') => void;
+  updateAppointmentStatus: (id: string, status: Appointment['status']) => void;
   updateAppointment: (a: Appointment) => void;
   removeAppointment: (id: string) => void;
   publicSlots: any[];
   searchAppointments: (clientName: string) => Promise<Appointment[]>;
   subscribeToAppointmentsSearch: (clientName: string, callback: (apps: Appointment[]) => void) => () => void;
+  setAdminMode: (mode: boolean) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -33,10 +35,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [services, setServices] = useState<Service[]>([]);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [publicSlots, setPublicSlots] = useState<any[]>([]);
+  const [isAdminMode, setAdminMode] = useState(false);
 
   useEffect(() => {
     import('./lib/firebase').then(({ db }) => {
-      import('firebase/firestore').then(({ collection, onSnapshot, setDoc, doc }) => {
+      import('firebase/firestore').then(({ collection, onSnapshot }) => {
         // Services
         const unsubServices = onSnapshot(collection(db, 'services'), (snapshot) => {
           setServices(snapshot.docs.map(d => d.data() as Service));
@@ -52,34 +55,54 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           setPublicSlots(snapshot.docs.map(doc => doc.data()));
         }, () => {});
 
-        let unsubAppointments: () => void = () => {};
-        
-        import('firebase/auth').then(({ getAuth, onAuthStateChanged }) => {
-          const auth = getAuth();
-          onAuthStateChanged(auth, (user) => {
-            if (user) {
-              unsubAppointments = onSnapshot(collection(db, 'appointments'), (snapshot) => {
-                 const apps = snapshot.docs.map(doc => doc.data() as Appointment);
-                 setAppointments(apps);
-              }, (error) => {
-                 console.error("Appointments fetch error:", error);
-              });
-            } else {
-              unsubAppointments();
-              setAppointments([]);
-            }
-          });
-        });
-
         return () => {
           unsubServices();
           unsubProfessionals();
           unsubPublic();
-          unsubAppointments();
         };
       });
     });
   }, []);
+
+  useEffect(() => {
+    let unsubAppointments: () => void = () => {};
+    
+    if (isAdminMode) {
+      import('./lib/firebase').then(({ db }) => {
+        import('firebase/firestore').then(({ collection, onSnapshot }) => {
+          let isInitialLoad = true;
+          unsubAppointments = onSnapshot(collection(db, 'appointments'), (snapshot) => {
+             const apps = snapshot.docs.map(doc => doc.data() as Appointment);
+             setAppointments(apps);
+             
+             if (!isInitialLoad) {
+               snapshot.docChanges().forEach(change => {
+                 if (!change.doc.metadata.hasPendingWrites) {
+                   const data = change.doc.data() as Appointment;
+                   if (change.type === 'added') {
+                     toast.success(`Novo agendamento: ${data.clientName}`);
+                   } else if (change.type === 'modified') {
+                     toast(`Agendamento de ${data.clientName} atualizado para ${data.status}`, { icon: '🔄' });
+                   } else if (change.type === 'removed') {
+                     toast.error(`Agendamento removido: ${data.clientName}`);
+                   }
+                 }
+               });
+             }
+             isInitialLoad = false;
+          }, (error) => {
+             console.error("Appointments fetch error:", error);
+          });
+        });
+      });
+    } else {
+      setAppointments([]);
+    }
+
+    return () => {
+      unsubAppointments();
+    };
+  }, [isAdminMode]);
 
   const addProfessional = async (p: Professional) => {
     try {
@@ -168,7 +191,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   };
   
-  const updateAppointmentStatus = async (id: string, status: 'Pendente' | 'Confirmado' | 'Cancelado') => {
+  const updateAppointmentStatus = async (id: string, status: Appointment['status']) => {
     try {
       const appToUpdate = appointments.find(a => a.id === id);
       if (!appToUpdate) throw new Error("Agendamento não encontrado.");
@@ -247,12 +270,27 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const subscribeToAppointmentsSearch = (clientSearchTerm: string, callback: (apps: Appointment[]) => void): (() => void) => {
     let internalUnsub: (() => void) | null = null;
     let isCancelled = false;
+    let isInitialLoad = true;
     
     import('firebase/firestore').then(({ collection, onSnapshot }) => {
       if (isCancelled) return;
       
       internalUnsub = onSnapshot(collection(db, 'appointments'), (snapshot) => {
         const searchTermLower = clientSearchTerm.trim().toLowerCase();
+        
+        if (!isInitialLoad) {
+          snapshot.docChanges().forEach(change => {
+            if (!change.doc.metadata.hasPendingWrites) {
+              const data = change.doc.data() as Appointment;
+              const matchesSearch = (data.clientName?.toLowerCase().includes(searchTermLower) || data.clientPhone?.includes(clientSearchTerm));
+              if (matchesSearch && change.type === 'modified') {
+                toast(`O status do seu agendamento foi atualizado para: ${data.status}`, { icon: '🔔' });
+              }
+            }
+          });
+        }
+        isInitialLoad = false;
+
         const results = snapshot.docs
           .map(doc => doc.data() as Appointment)
           .filter(app => {
@@ -278,7 +316,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       addProfessional, updateProfessional, removeProfessional,
       addService, updateService, removeService,
       addAppointment, updateAppointmentStatus, updateAppointment, removeAppointment, publicSlots,
-      searchAppointments, subscribeToAppointmentsSearch
+      searchAppointments, subscribeToAppointmentsSearch, setAdminMode
     }}>
       {children}
     </AppContext.Provider>

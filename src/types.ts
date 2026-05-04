@@ -25,7 +25,7 @@ export interface Appointment {
   professionalId: string;
   date: string; // YYYY-MM-DD
   time: string; // HH:mm
-  status: 'Pendente' | 'Confirmado' | 'Cancelado';
+  status: 'Pendente' | 'Confirmado' | 'Em Progresso' | 'Concluído' | 'Cancelado';
   createdAt: string; // ISO string
   whatsappSent?: boolean;
 }

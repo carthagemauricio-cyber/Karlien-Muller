@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
-import { AppProvider } from './store';
+import { AppProvider, useAppStore } from './store';
 import { Sidebar, MobileNav } from './components/Navigation';
 import { Dashboard } from './pages/Dashboard';
 import { ClientBooking } from './pages/ClientBooking';
@@ -9,11 +9,17 @@ import { Professionals } from './pages/Professionals';
 import { ServicesPage } from './pages/Services';
 import { CalendarView } from './pages/CalendarView';
 import { Landing } from './pages/Landing';
+import { Settings } from './pages/Settings';
 import { ArrowLeft } from 'lucide-react';
 
 function AppContent() {
   const [appMode, setAppMode] = useState<'landing' | 'client' | 'admin'>('landing');
   const [currentView, setCurrentView] = useState('dashboard');
+  const { setAdminMode } = useAppStore();
+
+  useEffect(() => {
+    setAdminMode(appMode === 'admin');
+  }, [appMode, setAdminMode]);
 
   if (appMode === 'landing') {
     return (
@@ -71,9 +77,6 @@ function AppContent() {
   }
 
   const handleSignOut = () => {
-    import('./lib/firebase').then(({ auth }) => {
-      import('firebase/auth').then(({ signOut }) => signOut(auth));
-    });
     setAppMode('landing');
   };
 
@@ -93,6 +96,7 @@ function AppContent() {
           {currentView === 'book' && <ClientBooking />}
           {currentView === 'professionals' && <Professionals />}
           {currentView === 'services' && <ServicesPage />}
+          {currentView === 'settings' && <Settings />}
         </div>
       </main>
 

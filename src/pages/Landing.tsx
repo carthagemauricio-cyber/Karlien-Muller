@@ -9,20 +9,41 @@ import { signInAnonymously } from 'firebase/auth';
 export const Landing = ({ onSelectMode }: { onSelectMode: (mode: 'client' | 'admin') => void }) => {
   const { t } = useTranslation();
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   
+  React.useEffect(() => {
+    // Explicitly reset the password to 123456 during this update, 
+    // to override any existing authentication as per the user's manual instruction.
+    if (localStorage.getItem('admin_password_force_reset_v1') !== 'true') {
+      localStorage.setItem('admin_password', '123456');
+      localStorage.setItem('admin_password_force_reset_v1', 'true');
+    }
+  }, []);
+
   const handleAdminAuth = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === '123456') {
+    
+    // Ensure default password is set if not exists
+    if (!localStorage.getItem('admin_password')) {
+      localStorage.setItem('admin_password', '123456');
+    }
+    
+    const storedPassword = localStorage.getItem('admin_password');
+    // Username can be anything as long as the password is correct, 
+    // or we can mandate a specific username like 'admin' if requested. 
+    // The prompt just says "all team members use this password" and "Display a login form with Username, Password".
+    if (username.trim() && password === storedPassword) {
       try {
-        await signInAnonymously(auth);
         onSelectMode('admin');
         toast.success(t('auth.success', 'Acesso concedido'));
       } catch (err) {
         toast.error(t('auth.db_error', 'Erro ao autenticar no banco de dados'));
       }
+    } else if (!username.trim()) {
+      toast.error(t('auth.username_required', 'O utilizador é obrigatório'));
     } else {
-      toast.error(t('auth.error', 'Palavra-passe incorreta'));
+      toast.error(t('auth.error', 'Credenciais incorretas'));
       setPassword('');
     }
   };
@@ -130,15 +151,26 @@ export const Landing = ({ onSelectMode }: { onSelectMode: (mode: 'client' | 'adm
                   </div>
                 </div>
                 
-                <div className="relative mb-4">
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder={t('auth.password_placeholder', 'Palavra-passe')}
-                    className="w-full bg-charcoal-900 border border-charcoal-600 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-secondary-500 transition-colors"
-                    autoFocus
-                  />
+                <div className="space-y-4 mb-4">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      placeholder={t('auth.username_placeholder', 'Utilizador')}
+                      className="w-full bg-charcoal-900 border border-charcoal-600 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-secondary-500 transition-colors"
+                      autoFocus
+                    />
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder={t('auth.password_placeholder', 'Palavra-passe')}
+                      className="w-full bg-charcoal-900 border border-charcoal-600 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-secondary-500 transition-colors"
+                    />
+                  </div>
                 </div>
                 
                 <div className="flex items-center gap-3">

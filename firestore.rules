@@ -24,14 +24,14 @@ service cloud.firestore {
              isValidString(data.professionalId, 1, 50) &&
              data.date is string && data.date.matches("^\\d{4}-\\d{2}-\\d{2}$") &&
              data.time is string && data.time.matches("^\\d{2}:\\d{2}$") &&
-             data.status in ['Pendente', 'Confirmado', 'Cancelado'] &&
+             data.status in ['Pendente', 'Confirmado', 'Em Progresso', 'Concluído', 'Cancelado'] &&
              data.createdAt is string &&
              (!('whatsappSent' in data) || data.whatsappSent is bool);
     }
 
     function isValidPublicSlot(data) {
       return data.keys().hasAll(['id', 'appId', 'professionalId', 'date', 'time', 'status']) &&
-             data.status in ['Pendente', 'Confirmado', 'Cancelado'];
+             data.status in ['Pendente', 'Confirmado', 'Em Progresso', 'Concluído', 'Cancelado'];
     }
 
     match /appointments/{appId} {

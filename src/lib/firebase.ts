@@ -1,10 +1,22 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, getDoc, doc } from 'firebase/firestore';
+import { getFirestore, getDoc, doc, enableIndexedDbPersistence } from 'firebase/firestore';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import firebaseConfig from '../../firebase-applet-config.json'; 
 
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+const firestoreDb = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+
+enableIndexedDbPersistence(firestoreDb).catch((err) => {
+    if (err.code == 'failed-precondition') {
+        // Multiple tabs open, persistence can only be cleared in one tab at a a time.
+        console.warn('Persistence failed: Multiple tabs open');
+    } else if (err.code == 'unimplemented') {
+        // The current browser does not support all of the features required to enable persistence
+        console.warn('Persistence not supported in this browser');
+    }
+});
+
+export const db = firestoreDb;
 
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
