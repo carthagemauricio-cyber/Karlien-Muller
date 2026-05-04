@@ -140,6 +140,8 @@ export const CalendarView = () => {
                         {apt.status === 'Confirmado' && <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>}
                         {apt.status === 'Pendente' && <div className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]"></div>}
                         {apt.status === 'Cancelado' && <div className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]"></div>}
+                        {apt.status === 'Em Progresso' && <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]"></div>}
+                        {apt.status === 'Concluído' && <div className="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.5)]"></div>}
                       </h4>
                       <p className="text-[10px] font-mono text-charcoal-500 uppercase tracking-widest mt-1">{apt.clientPhone}</p>
                     </div>

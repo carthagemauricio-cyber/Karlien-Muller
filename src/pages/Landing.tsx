@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Scissors, CalendarHeart, UserCog, ArrowRight, X, Lock } from 'lucide-react';
+import { Scissors, CalendarHeart, UserCog, ArrowRight, X, Lock, ArrowLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
@@ -140,7 +140,19 @@ export const Landing = ({ onSelectMode }: { onSelectMode: (mode: 'client' | 'adm
                 </div>
               </button>
             ) : (
-              <form onSubmit={handleAdminAuth} className="w-full bg-charcoal-800/50 p-6 rounded-[32px] border border-secondary-600 shadow-sm transition-all focus:outline-none backdrop-blur-sm animate-in fade-in slide-in-from-bottom-4">
+              <form onSubmit={handleAdminAuth} className="w-full bg-charcoal-800/50 p-6 rounded-[32px] border border-secondary-600 shadow-sm transition-all focus:outline-none backdrop-blur-sm animate-in fade-in slide-in-from-bottom-4 relative">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowPasswordPrompt(false);
+                    setPassword('');
+                  }}
+                  className="absolute top-6 right-6 flex items-center justify-center w-8 h-8 rounded-full bg-charcoal-700/50 text-charcoal-300 hover:bg-charcoal-700 hover:text-white transition-colors"
+                  aria-label="Voltar"
+                >
+                  <ArrowLeft size={16} />
+                </button>
+                
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full bg-charcoal-700/50 text-secondary-300 flex items-center justify-center shrink-0">
                     <Lock size={24} />
@@ -182,7 +194,7 @@ export const Landing = ({ onSelectMode }: { onSelectMode: (mode: 'client' | 'adm
                     }}
                     className="flex-1 px-4 py-3 rounded-2xl border border-charcoal-600 text-charcoal-300 font-medium hover:bg-charcoal-700 transition-colors"
                   >
-                    {t('common.cancel', 'Cancelar')}
+                    {t('common.back', 'Voltar')}
                   </button>
                   <button 
                     type="submit"

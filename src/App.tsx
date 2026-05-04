@@ -62,9 +62,9 @@ function AppContent() {
 
              <button 
                onClick={() => setAppMode('landing')}
-               className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-charcoal-400 hover:text-secondary-400 transition-all bg-charcoal-800 px-6 py-3 rounded-full border border-charcoal-700 shadow-lg font-ui"
+               className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-charcoal-400 hover:text-secondary-400 transition-all bg-charcoal-800 px-4 md:px-6 py-3 rounded-full border border-charcoal-700 shadow-lg font-ui"
              >
-               <ArrowLeft size={16} /> <span className="hidden sm:inline">Voltar</span>
+               <ArrowLeft size={16} /> <span>Voltar</span>
              </button>
            </div>
         </header>

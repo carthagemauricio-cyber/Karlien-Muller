@@ -37,23 +37,25 @@ service cloud.firestore {
     match /appointments/{appId} {
       allow create: if isValidAppointment(request.resource.data) && request.resource.data.status == 'Pendente';
       allow read, list: if true;
-      allow update, delete: if isAuthenticated();
+      allow update: if isValidAppointment(request.resource.data);
+      allow delete: if true;
     }
 
     match /public_slots/{slotId} {
       allow create: if isValidPublicSlot(request.resource.data) && request.resource.data.status == 'Pendente';
       allow read, list: if true;
-      allow update, delete: if isAuthenticated();
+      allow update: if isValidPublicSlot(request.resource.data);
+      allow delete: if true;
     }
 
     match /services/{serviceId} {
       allow read, list: if true;
-      allow write: if isAuthenticated();
+      allow write: if true;
     }
 
     match /professionals/{profId} {
       allow read, list: if true;
-      allow write: if isAuthenticated();
+      allow write: if true;
     }
   }
 }
