@@ -39,39 +39,39 @@ export const ServicesPage = () => {
         </div>
         <button 
           onClick={() => setEditingService('new')}
-          className="bg-primary-600 hover:bg-primary-500 text-white px-8 py-4 rounded-full font-bold shadow-xl shadow-primary-900/20 transition-all text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-3 font-ui">
+          className="bg-primary-600 hover:bg-primary-500 text-white px-8 py-4 rounded-full font-bold shadow-xl shadow-primary-900/20 transition-all text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-3 font-sans">
           <Plus size={18} /> {t('management.add_service')}
         </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {services.map((service) => (
-          <div key={service.id} className="bg-gray-50 rounded-[40px] p-8 shadow-2xl border border-gray-200 hover:border-primary-400/30 transition-all group flex flex-col">
+          <div key={service.id} className="bg-white rounded-[40px] p-8 shadow-sm border border-gray-200 hover:border-primary-300 hover:shadow-md transition-all group flex flex-col">
             <div className="flex justify-between items-start mb-6">
-              <h3 className="text-2xl font-sans font-medium text-gray-900 group-hover:text-primary-200 transition-colors">
+              <h3 className="text-2xl font-bold text-gray-900 group-hover:text-primary-700 transition-colors">
                 {service.name}
               </h3>
             </div>
 
             <div className="flex-1 space-y-4 mb-8">
-                <div className="flex items-center gap-2 text-[10px] font-bold text-primary-400/60 uppercase tracking-[0.2em] bg-primary-400/5 px-4 py-2 rounded-xl w-max border border-primary-400/10">
-                  <Clock size={14} className="text-primary-400/40" />
+                <div className="flex items-center gap-2 text-[10px] font-bold text-primary-600 uppercase tracking-[0.2em] bg-primary-50 px-4 py-2 rounded-xl w-max border border-primary-100">
+                  <Clock size={14} className="text-primary-400" />
                   {service.duration} {t('management.minutes')}
                 </div>
-                <div className="text-3xl font-sans font-medium text-secondary-400">
+                <div className="text-3xl font-bold text-primary-600">
                   {formatCurrency(service.price)}
                 </div>
             </div>
 
-            <div className="flex gap-4 pt-6 border-t border-gray-200">
+            <div className="flex gap-4 pt-6 border-t border-gray-100">
               <button 
                 onClick={() => setEditingService(service)}
-                className="flex-1 py-3 text-[10px] font-bold text-primary-400/80 hover:text-primary-400 transition-colors uppercase tracking-widest border border-primary-400/10 rounded-2xl bg-primary-400/5 hover:bg-primary-400/10 font-ui text-xs">
+                className="flex-1 py-3 text-[10px] font-bold text-primary-600 hover:text-primary-700 transition-colors uppercase tracking-widest border border-primary-200 rounded-2xl bg-primary-50 hover:bg-primary-100 shadow-sm">
                 {t('management.edit')}
               </button>
               <button 
                 onClick={() => requestDelete(service.id)}
-                className="flex-1 py-3 text-[10px] font-bold text-rose-400/60 hover:text-rose-400 transition-colors uppercase tracking-widest border border-rose-500/10 rounded-2xl hover:bg-rose-500/10 font-ui text-xs">
+                className="flex-1 py-3 text-[10px] font-bold text-rose-500 hover:text-white transition-colors uppercase tracking-widest border border-rose-200 rounded-2xl hover:bg-rose-500 shadow-sm">
                 {t('management.delete')}
               </button>
             </div>
@@ -192,7 +192,7 @@ const ServiceModal = ({ service, onClose, onSave }: { service: Service | null, o
           
           <button 
             type="submit"
-            className="mt-10 w-full bg-primary-600 hover:bg-primary-500 text-white rounded-2xl py-5 px-8 font-bold uppercase tracking-[0.2em] transition-all shadow-2xl shadow-primary-900/40 active:scale-95 text-xs font-ui"
+            className="mt-10 w-full bg-primary-600 hover:bg-primary-500 text-white rounded-2xl py-5 px-8 font-bold uppercase tracking-[0.2em] transition-all shadow-2xl shadow-primary-900/40 active:scale-95 text-xs font-sans"
           >
             {service ? t('management.save') : t('management.service_create')}
           </button>

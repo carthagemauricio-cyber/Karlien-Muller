@@ -41,28 +41,28 @@ export const Professionals = () => {
         </div>
         <button 
           onClick={() => setEditingProf('new')}
-          className="bg-primary-600 hover:bg-primary-500 text-white px-8 py-4 rounded-full font-bold shadow-xl shadow-primary-900/20 transition-all text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-3 font-ui">
+          className="bg-primary-600 hover:bg-primary-500 text-white px-8 py-4 rounded-full font-bold shadow-xl shadow-primary-900/20 transition-all text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-3 font-sans">
           <Plus size={18} /> {t('management.add_professional')}
         </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {professionals.map((prof) => (
-          <div key={prof.id} className="bg-gray-50 rounded-[40px] p-8 shadow-2xl border border-gray-200 flex flex-col hover:border-primary-400/30 transition-all group">
+          <div key={prof.id} className="bg-white rounded-[40px] p-8 shadow-sm border border-gray-200 flex flex-col hover:border-primary-300 hover:shadow-md transition-all group">
             <div className="flex flex-col items-center text-center mb-8">
               <div className="relative mb-6">
                 <img 
                   src={prof.photo} 
                   alt={prof.name} 
-                  className="w-32 h-32 rounded-full object-cover border-2 border-primary-400/20 shadow-2xl group-hover:border-primary-400 transition-all"
+                  className="w-32 h-32 rounded-[32px] object-cover border border-primary-100 shadow-sm group-hover:border-primary-300 transition-all"
                 />
-                <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-full bg-gray-100 border border-primary-400/30 text-primary-400 flex items-center justify-center">
+                <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-2xl bg-primary-50 border border-primary-200 text-primary-600 flex items-center justify-center shadow-sm">
                   <User size={20} />
                 </div>
               </div>
               <div>
-                <h3 className="text-2xl font-sans font-medium text-gray-900 group-hover:text-primary-200 transition-colors">{prof.name}</h3>
-                <div className="text-[10px] text-primary-400/60 font-bold mt-2 uppercase tracking-[0.3em]">
+                <h3 className="text-2xl font-bold text-gray-900 group-hover:text-primary-700 transition-colors">{prof.name}</h3>
+                <div className="text-[10px] text-primary-500 font-bold mt-2 uppercase tracking-[0.3em]">
                    {t('management.team_member_role', 'Specialist')}
                 </div>
               </div>
@@ -75,36 +75,36 @@ export const Professionals = () => {
                   {prof.specialties.map(specId => {
                     const serv = services.find(s => s.id === specId);
                     return serv ? (
-                      <span key={specId} className="px-3 py-1.5 bg-primary-400/5 text-primary-400 rounded-xl text-[10px] font-bold uppercase tracking-wider border border-primary-400/10">
+                      <span key={specId} className="px-3 py-1.5 bg-primary-50 text-primary-700 rounded-[10px] text-[10px] font-bold uppercase tracking-wider border border-primary-100 shadow-sm">
                         {serv.name}
                       </span>
                     ) : null;
                   })}
                 </div>
                 {prof.specialties.length === 0 && (
-                  <span className="text-xs text-gray-400 italic font-light">{t('management.no_specialties')}</span>
+                  <span className="text-xs text-gray-400 italic font-medium">{t('management.no_specialties')}</span>
                 )}
               </div>
 
               <div>
                 <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 mt-6">{t('management.schedule')}</h4>
-                <div className="bg-white/50 rounded-2xl p-4 border border-gray-200/50">
+                <div className="bg-gray-50 rounded-2xl p-4 border border-gray-100 shadow-inner">
                    <div className="flex gap-2 mb-3 justify-center">
                      {daysOfWeek.map((day, idx) => (
                        <div 
                          key={idx} 
                          className={cn(
-                           "w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold transition-all border",
+                           "w-7 h-7 rounded-[10px] flex items-center justify-center text-[10px] font-bold transition-all border",
                            prof.availability.days.includes(idx) 
-                             ? "bg-primary-400/10 border-primary-400/30 text-primary-400" 
-                             : "border-transparent text-gray-400"
+                             ? "bg-primary-100 border-primary-200 text-primary-700 shadow-sm" 
+                             : "bg-white border-gray-200 text-gray-400"
                          )}
                        >
                          {day.charAt(0)}
                        </div>
                      ))}
                    </div>
-                   <div className="text-[11px] font-bold text-gray-600 flex items-center justify-center gap-2 tracking-widest uppercase font-mono">
+                   <div className="text-[11px] font-bold text-gray-700 flex items-center justify-center gap-2 tracking-widest uppercase font-mono">
                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
                      {prof.availability.startHour} — {prof.availability.endHour}
                    </div>
@@ -112,15 +112,15 @@ export const Professionals = () => {
               </div>
             </div>
 
-            <div className="flex gap-3 mt-8 pt-6 border-t border-gray-200">
+            <div className="flex gap-3 mt-8 pt-6 border-t border-gray-100">
               <button 
                 onClick={() => setEditingProf(prof)}
-                className="flex-1 py-3 text-[10px] font-bold text-primary-400 border border-primary-400/20 hover:bg-primary-400/10 rounded-2xl transition-all uppercase tracking-[0.2em] font-ui">
+                className="flex-1 py-3 text-[10px] font-bold text-primary-600 border border-primary-200 hover:bg-primary-50 hover:text-primary-700 rounded-2xl transition-all uppercase tracking-[0.2em] shadow-sm">
                 {t('management.edit')}
               </button>
               <button 
                 onClick={() => requestDelete(prof.id)}
-                className="py-3 px-6 text-[10px] font-bold text-rose-400/60 border border-rose-500/10 hover:bg-rose-500/10 hover:text-rose-400 rounded-2xl transition-all uppercase tracking-[0.2em] font-ui">
+                className="py-3 px-6 text-[10px] font-bold text-rose-500 hover:text-white border border-rose-200 hover:bg-rose-500 rounded-2xl transition-all uppercase tracking-[0.2em] shadow-sm">
                 {t('management.delete')}
               </button>
             </div>
@@ -387,7 +387,7 @@ const ProfessionalModal = ({ prof, onClose, onSave }: { prof: Professional | nul
           
           <button 
             type="submit"
-            className="mt-10 w-full bg-primary-600 hover:bg-primary-500 text-white rounded-2xl py-5 px-8 font-bold uppercase tracking-[0.2em] transition-all shadow-2xl shadow-primary-900/40 active:scale-95 text-xs font-ui"
+            className="mt-10 w-full bg-primary-600 hover:bg-primary-500 text-white rounded-2xl py-5 px-8 font-bold uppercase tracking-[0.2em] transition-all shadow-2xl shadow-primary-900/40 active:scale-95 text-xs font-sans"
           >
             {prof ? t('management.save') : t('management.professional_create')}
           </button>

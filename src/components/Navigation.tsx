@@ -18,15 +18,15 @@ const NavItem = ({ icon, label, isActive, onClick }: NavItemProps) => {
       className={cn(
         "flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-300 group",
         isActive 
-          ? "bg-primary-400/10 text-primary-400 shadow-sm border border-primary-400/20" 
-          : "text-gray-600 hover:bg-gray-100 hover:text-secondary-200"
+          ? "bg-primary-50 text-primary-700 shadow-sm border border-primary-200" 
+          : "text-gray-600 hover:bg-gray-100 hover:text-primary-700"
       )}
     >
-      <div className={cn("p-1.5 rounded-xl transition-colors", isActive ? "bg-primary-400/20" : "group-hover:bg-gray-200")}>
+      <div className={cn("p-1.5 rounded-xl transition-colors", isActive ? "bg-primary-100 text-primary-600" : "group-hover:bg-gray-200")}>
         {icon}
       </div>
-      <span className={cn("font-medium tracking-wide", isActive ? "font-semibold" : "")}>{label}</span>
-      {isActive && <div className="ml-auto w-1 h-4 bg-primary-400 rounded-full"></div>}
+      <span className={cn("font-medium tracking-wide", isActive ? "font-bold" : "")}>{label}</span>
+      {isActive && <div className="ml-auto w-1.5 h-4 bg-primary-500 rounded-full"></div>}
     </button>
   );
 };
@@ -149,17 +149,17 @@ export const MobileNav = ({
               key={item.id}
               onClick={() => setCurrentView(item.id)}
               className={cn(
-                "flex flex-col items-center justify-center p-2 rounded-xl transition-all w-16",
-                isActive ? "text-primary-400" : "text-gray-500"
+                "flex flex-col items-center justify-center p-2 rounded-xl transition-all min-w-16 flex-1",
+                isActive ? "text-primary-700" : "text-gray-500 hover:text-primary-600"
               )}
             >
               <div className={cn(
-                "p-1.5 rounded-full mb-1 transition-all",
-                isActive ? "bg-primary-400/10" : "bg-transparent"
+                "p-1.5 rounded-xl mb-1 transition-all",
+                isActive ? "bg-primary-100 text-primary-600 shadow-sm border border-primary-200" : "bg-transparent"
               )}>
-                <Icon size={20} className={isActive ? "text-primary-400" : ""} />
+                <Icon size={20} className={isActive ? "" : ""} />
               </div>
-              <span className="text-[10px] font-medium tracking-tight">{item.label}</span>
+              <span className={cn("text-[10px] font-medium tracking-tight", isActive ? "font-bold" : "")}>{item.label}</span>
             </button>
           );
         })}

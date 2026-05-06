@@ -75,53 +75,53 @@ export const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-        <div className="bg-gray-50 rounded-[32px] p-8 shadow-2xl border border-gray-200 flex flex-col group hover:border-primary-400/30 transition-all relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-primary-400/10 to-secondary-400/10 rounded-bl-full pointer-events-none"></div>
+        <div className="bg-white rounded-[32px] p-8 shadow-sm border border-gray-200 flex flex-col group hover:border-primary-300 transition-all relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-primary-400/5 to-secondary-400/5 rounded-bl-full pointer-events-none"></div>
           <div className="flex items-center justify-between mb-6">
-            <div className="w-12 h-12 rounded-2xl bg-primary-400/10 text-primary-400 flex items-center justify-center border border-primary-400/20">
+            <div className="w-12 h-12 rounded-2xl bg-primary-50 text-primary-600 flex items-center justify-center border border-primary-100">
               <CalendarClock size={24} />
             </div>
             <TrendingUp size={20} className="text-emerald-500" />
           </div>
-          <p className="text-xs text-gray-500 font-semibold uppercase tracking-widest mb-1">{t('dashboard.total_bookings')}</p>
-          <h2 className="text-4xl font-sans font-medium text-primary-200">{appointments.length}</h2>
+          <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">{t('dashboard.total_bookings')}</p>
+          <h2 className="text-4xl font-bold text-primary-600">{appointments.length}</h2>
         </div>
 
-        <div className="bg-gray-50 rounded-[32px] p-8 shadow-2xl border border-gray-200 flex flex-col group hover:border-secondary-400/30 transition-all relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-secondary-400/10 to-primary-400/10 rounded-bl-full pointer-events-none"></div>
+        <div className="bg-white rounded-[32px] p-8 shadow-sm border border-gray-200 flex flex-col group hover:border-secondary-300 transition-all relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-secondary-400/5 to-primary-400/5 rounded-bl-full pointer-events-none"></div>
           <div className="flex items-center justify-between mb-6">
-            <div className="w-12 h-12 rounded-2xl bg-secondary-400/10 text-secondary-400 flex items-center justify-center border border-secondary-400/20">
+            <div className="w-12 h-12 rounded-2xl bg-secondary-50 text-secondary-600 flex items-center justify-center border border-secondary-100">
               <Users size={24} />
             </div>
           </div>
-          <p className="text-xs text-gray-500 font-semibold uppercase tracking-widest mb-1">{t('dashboard.clients_today')}</p>
-          <h2 className="text-4xl font-sans font-medium text-secondary-200">{uniqueClientsToday}</h2>
+          <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">{t('dashboard.clients_today')}</p>
+          <h2 className="text-4xl font-bold text-secondary-600">{uniqueClientsToday}</h2>
         </div>
 
-        <div className="bg-gray-50 rounded-[32px] p-8 shadow-2xl border border-gray-200 flex flex-col group hover:border-primary-400/30 transition-all">
+        <div className="bg-white rounded-[32px] p-8 shadow-sm border border-gray-200 flex flex-col group hover:border-primary-300 transition-all">
           <div className="flex items-center justify-between mb-6">
-            <div className="w-12 h-12 rounded-2xl bg-gray-100 text-primary-400 flex items-center justify-center border border-primary-400/10">
+            <div className="w-12 h-12 rounded-2xl bg-gray-50 text-primary-600 flex items-center justify-center border border-gray-100">
               <Clock size={24} />
             </div>
           </div>
-          <p className="text-xs text-gray-500 font-semibold uppercase tracking-widest mb-1">{t('dashboard.pending_today')}</p>
-          <h2 className="text-4xl font-sans font-medium text-primary-200">
+          <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">{t('dashboard.pending_today')}</p>
+          <h2 className="text-4xl font-bold text-gray-900">
             {todayAppointments.filter(a => a.status === 'Pendente').length}
           </h2>
         </div>
       </div>
 
-      <div className="bg-gray-50 rounded-[40px] shadow-2xl border border-gray-200 overflow-hidden flex flex-col">
+      <div className="bg-white rounded-[40px] shadow-sm border border-gray-200 overflow-hidden flex flex-col">
         {/* Filters Bar */}
-        <div className="p-6 border-b border-gray-200 flex flex-col md:flex-row gap-4 justify-between bg-gray-50/50 backdrop-blur-md">
-          <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+        <div className="p-6 border-b border-gray-200 flex flex-col md:flex-row gap-4 justify-between bg-white z-10 relative">
+          <div className="relative flex-1 max-w-md group focus-within:ring-2 focus-within:ring-primary-500/30 rounded-2xl transition-all">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary-500" size={18} />
             <input 
               type="text" 
               placeholder={t('dashboard.search_placeholder')} 
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400/30 transition-all text-sm text-gray-900 placeholder-gray-400"
+              className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:outline-none transition-all text-sm text-gray-900 placeholder-gray-400 shadow-inner group-focus-within:shadow-md"
             />
           </div>
           <div className="flex gap-3">
@@ -129,12 +129,12 @@ export const Dashboard = () => {
               type="date"
               value={dateFilter}
               onChange={e => setDateFilter(e.target.value)}
-              className="flex-1 md:flex-none px-4 py-3 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400/30 transition-all text-sm text-gray-600 font-medium font-ui"
+              className="flex-1 md:flex-none px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-500/30 transition-all text-sm text-gray-700 font-medium font-sans shadow-inner focus:shadow-md"
             />
             <select 
               value={statusFilter}
               onChange={e => setStatusFilter(e.target.value)}
-              className="flex-1 md:flex-none px-4 py-3 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400/30 transition-all text-sm text-gray-600 font-medium font-ui"
+              className="flex-1 md:flex-none px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-500/30 transition-all text-sm text-gray-700 font-medium font-sans shadow-inner focus:shadow-md"
             >
               <option value="all">{t('dashboard.status_all')}</option>
               <option value="Pendente">{t('common.pending', 'Pendente')}</option>
@@ -147,7 +147,7 @@ export const Dashboard = () => {
         </div>
 
         {/* Mobile Cards View */}
-        <div className="md:hidden flex flex-col gap-4 p-4 bg-white/30">
+        <div className="md:hidden flex flex-col gap-4 p-4 bg-gray-50">
           {filteredAppointments.length > 0 ? (
             filteredAppointments.map(app => {
               const service = services.find(s => s.id === app.serviceId);
@@ -155,13 +155,13 @@ export const Dashboard = () => {
               const dateObj = parseISO(app.date);
 
               return (
-                <div key={app.id} className="bg-gray-50 p-6 rounded-[32px] border border-gray-200 shadow-xl flex flex-col gap-4">
+                <div key={app.id} className="bg-white p-6 rounded-[32px] border border-gray-200 shadow-sm flex flex-col gap-4">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h4 className="font-sans font-medium text-xl text-gray-900">
+                      <h4 className="font-bold text-xl text-gray-900">
                         {app.clientName}
                       </h4>
-                      <p className="text-xs text-primary-400/60 font-mono mt-1">{app.clientPhone}</p>
+                      <p className="text-xs text-primary-500 font-bold mt-1">{app.clientPhone}</p>
                     </div>
                     {getStatusBadge(app.status)}
                   </div>
@@ -170,27 +170,27 @@ export const Dashboard = () => {
                   
                   <div className="flex flex-col gap-3">
                     <div className="flex items-center gap-4 text-sm">
-                      <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center shrink-0 border border-gray-300">
-                         <Scissors size={16} className="text-primary-400" />
+                      <div className="w-9 h-9 rounded-[14px] bg-primary-50 flex items-center justify-center shrink-0 border border-primary-100">
+                         <Scissors size={16} className="text-primary-600" />
                       </div>
                       <span className="font-medium text-gray-800">{service?.name}</span>
                     </div>
                     <div className="flex items-center gap-4 text-sm">
                        {professional?.photo ? (
-                         <img src={professional.photo} alt={professional.name} className="w-9 h-9 rounded-full object-cover shrink-0 border border-secondary-400/20" />
+                         <img src={professional.photo} alt={professional.name} className="w-9 h-9 rounded-[14px] object-cover shrink-0 border border-gray-200" />
                        ) : (
-                         <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center shrink-0 border border-gray-300">
-                           <User size={16} className="text-primary-400" />
+                         <div className="w-9 h-9 rounded-[14px] bg-primary-50 flex items-center justify-center shrink-0 border border-primary-100">
+                           <User size={16} className="text-primary-600" />
                          </div>
                        )}
                       <span className="font-medium text-gray-700">{professional?.name}</span>
                     </div>
                     <div className="flex items-center gap-4 text-sm">
-                      <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center shrink-0 border border-gray-300">
-                        <Clock size={16} className="text-primary-400" />
+                      <div className="w-9 h-9 rounded-[14px] bg-primary-50 flex items-center justify-center shrink-0 border border-primary-100">
+                        <Clock size={16} className="text-primary-600" />
                       </div>
                       <span className="font-medium text-gray-700">
-                        {format(dateObj, 'dd MMM yyyy', { locale: currentLocale })} às <strong className="text-secondary-400 font-mono">{app.time}h</strong>
+                        {format(dateObj, 'dd MMM yyyy', { locale: currentLocale })} às <strong className="text-primary-600 font-bold">{app.time}h</strong>
                       </span>
                     </div>
                   </div>
@@ -200,7 +200,7 @@ export const Dashboard = () => {
                      {app.status === 'Pendente' && (
                         <button 
                           onClick={() => handleStatusChange(app.id, 'Confirmado')}
-                          className="flex-1 py-3 bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 rounded-xl text-xs font-semibold hover:bg-emerald-600/30 transition-all uppercase tracking-widest shadow-lg shadow-emerald-900/10 font-ui"
+                          className="flex-1 py-3 bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 rounded-xl text-xs font-semibold hover:bg-emerald-600/30 transition-all uppercase tracking-widest shadow-lg shadow-emerald-900/10 font-sans"
                         >
                           {t('dashboard.confirm_btn', 'Confirmar')}
                         </button>
@@ -277,22 +277,22 @@ export const Dashboard = () => {
                   const dateObj = parseISO(app.date);
 
                   return (
-                    <tr key={app.id} className="hover:bg-gray-100/30 transition-all group">
+                    <tr key={app.id} className="hover:bg-gray-50 transition-all group">
                       <td className="px-8 py-6">
-                        <div className="font-sans text-lg text-gray-900 group-hover:text-primary-200 transition-colors uppercase tracking-tight">{app.clientName}</div>
+                        <div className="font-bold text-lg text-gray-900 group-hover:text-primary-700 transition-colors uppercase tracking-tight">{app.clientName}</div>
                         <div className="text-[10px] text-gray-500 mt-1 uppercase tracking-widest font-mono">{t('dashboard.created_at', { date: format(new Date(app.createdAt || new Date()), 'dd/MM, HH:mm') })}</div>
                       </td>
-                      <td className="px-8 py-6 font-mono text-xs text-gray-600 group-hover:text-primary-400/50">{app.clientPhone}</td>
-                      <td className="px-8 py-6 text-gray-800 font-light">{service?.name}</td>
+                      <td className="px-8 py-6 font-mono text-xs text-gray-600 group-hover:text-primary-600 font-bold">{app.clientPhone}</td>
+                      <td className="px-8 py-6 text-gray-800 font-medium">{service?.name}</td>
                       <td className="px-8 py-6">
                         <div className="flex items-center gap-3">
-                          <img src={professional?.photo} alt="" className="w-8 h-8 rounded-full object-cover border border-secondary-400/20" />
-                          <span className="text-gray-700 font-light group-hover:text-gray-900 transition-colors">{professional?.name}</span>
+                          <img src={professional?.photo} alt="" className="w-8 h-8 rounded-full object-cover border border-gray-200" />
+                          <span className="text-gray-700 font-medium group-hover:text-gray-900 transition-colors">{professional?.name}</span>
                         </div>
                       </td>
                       <td className="px-8 py-6">
-                        <div className="font-medium text-secondary-200/80 font-ui text-xs">{format(dateObj, 'dd/MMM/yyyy', { locale: currentLocale })}</div>
-                        <div className="text-[10px] text-primary-400/60 mt-1 uppercase tracking-widest font-bold font-mono">{app.time}h</div>
+                        <div className="font-bold text-gray-900 font-ui text-xs">{format(dateObj, 'dd/MMM/yyyy', { locale: currentLocale })}</div>
+                        <div className="text-[10px] text-primary-600 mt-1 uppercase tracking-widest font-bold font-mono">{app.time}h</div>
                       </td>
                       <td className="px-8 py-6">
                         {getStatusBadge(app.status)}

@@ -54,13 +54,13 @@ export const Landing = ({ onSelectMode }: { onSelectMode: (mode: 'client' | 'adm
         <LanguageSwitcher />
       </div>
       {/* Left/Top Image Section */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-gray-100">
+      <div className="hidden lg:flex lg:w-1/2 relative bg-gray-50">
         <img 
           src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1600&q=80" 
           alt="MarcaJá Appointments" 
-          className="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay"
+          className="absolute inset-0 w-full h-full object-cover opacity-20"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-100 via-gray-100/40 to-transparent flex flex-col justify-end p-16">
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-50 via-gray-50/70 to-white/30 flex flex-col justify-end p-16">
           <h2 className="text-5xl font-sans text-gray-900 mb-4 whitespace-pre-line leading-tight">{t('landing.hero_title')}</h2>
           <div className="h-1 w-24 bg-primary-400 mb-6"></div>
           <p className="text-gray-700 text-lg max-w-sm font-light">
@@ -72,8 +72,8 @@ export const Landing = ({ onSelectMode }: { onSelectMode: (mode: 'client' | 'adm
       {/* Right/Bottom Content Section */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-12 relative overflow-hidden bg-white">
         {/* Decorative background blobs */}
-        <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-primary-600/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-secondary-900/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-primary-600/5 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-secondary-900/5 rounded-full blur-[100px] pointer-events-none"></div>
 
         <div className="max-w-md w-full relative z-10 flex flex-col items-center lg:items-start">
           <div className="flex flex-col items-center group cursor-pointer mb-12">
@@ -106,16 +106,16 @@ export const Landing = ({ onSelectMode }: { onSelectMode: (mode: 'client' | 'adm
             {/* Client Option */}
             <button 
               onClick={() => onSelectMode('client')}
-              className="w-full group bg-gray-50/50 p-6 rounded-[32px] border border-primary-900/30 hover:border-primary-400/50 shadow-sm hover:shadow-2xl hover:shadow-primary-900/20 transition-all flex items-center gap-6 text-left focus:outline-none backdrop-blur-sm"
+              className="w-full group bg-white p-6 rounded-[32px] border border-gray-200 hover:border-primary-400 shadow-md hover:shadow-xl hover:shadow-primary-500/10 transition-all flex items-center gap-6 text-left focus:outline-none"
             >
-              <div className="w-16 h-16 rounded-full bg-gray-100 text-primary-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform border border-primary-400/20 shadow-inner">
+              <div className="w-16 h-16 rounded-3xl bg-primary-50 text-primary-600 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform border border-primary-100 shadow-sm">
                 <CalendarHeart size={32} />
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-sans font-medium text-primary-100 mb-1">{t('landing.i_am_client')}</h3>
-                <p className="text-sm text-gray-600 font-light">{t('landing.client_desc')}</p>
+                <h3 className="text-xl font-sans font-bold text-gray-900 mb-1">{t('landing.i_am_client')}</h3>
+                <p className="text-sm text-gray-500 font-medium">{t('landing.client_desc')}</p>
               </div>
-              <div className="text-primary-400/30 group-hover:text-primary-400 group-hover:translate-x-1 transition-all">
+              <div className="text-gray-300 group-hover:text-primary-400 group-hover:translate-x-1 transition-all">
                 <ArrowRight size={24} />
               </div>
             </button>
@@ -124,28 +124,28 @@ export const Landing = ({ onSelectMode }: { onSelectMode: (mode: 'client' | 'adm
             {!showPasswordPrompt ? (
               <button 
                 onClick={() => setShowPasswordPrompt(true)}
-                className="w-full group bg-gray-50/30 p-6 rounded-[32px] border border-transparent hover:border-secondary-600 transition-all flex items-center gap-6 text-left focus:outline-none"
+                className="w-full group bg-white p-6 rounded-[32px] border border-gray-200 hover:border-secondary-500 shadow-sm hover:shadow-xl hover:shadow-secondary-500/10 transition-all flex items-center gap-6 text-left focus:outline-none"
               >
-                <div className="w-16 h-16 rounded-full bg-gray-100/50 text-secondary-300 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                <div className="w-16 h-16 rounded-3xl bg-secondary-50 text-secondary-600 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform border border-secondary-100">
                   <UserCog size={32} />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-xl font-sans font-medium text-gray-900 mb-1">{t('landing.i_am_team')}</h3>
-                  <p className="text-sm text-gray-500 font-light">{t('landing.team_desc')}</p>
+                  <h3 className="text-xl font-sans font-bold text-gray-900 mb-1">{t('landing.i_am_team')}</h3>
+                  <p className="text-sm text-gray-500 font-medium">{t('landing.team_desc')}</p>
                 </div>
-                <div className="text-gray-400 group-hover:text-secondary-500 group-hover:translate-x-1 transition-all">
+                <div className="text-gray-300 group-hover:text-secondary-500 group-hover:translate-x-1 transition-all">
                   <ArrowRight size={24} />
                 </div>
               </button>
             ) : (
-              <form onSubmit={handleAdminAuth} className="w-full bg-gray-50/50 p-6 rounded-[32px] border border-secondary-600 shadow-sm transition-all focus:outline-none backdrop-blur-sm animate-in fade-in slide-in-from-bottom-4 relative">
+              <form onSubmit={handleAdminAuth} className="w-full bg-white p-8 rounded-[32px] border border-gray-200 shadow-xl transition-all focus:outline-none animate-in fade-in slide-in-from-bottom-4 relative">
                 <button
                   type="button"
                   onClick={() => {
                     setShowPasswordPrompt(false);
                     setPassword('');
                   }}
-                  className="absolute top-6 right-6 flex items-center justify-center w-8 h-8 rounded-full bg-gray-100/50 text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                  className="absolute top-6 right-6 flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-900 transition-colors"
                   aria-label="Voltar"
                 >
                   <ArrowLeft size={16} />

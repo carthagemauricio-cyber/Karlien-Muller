@@ -96,7 +96,7 @@ export const Settings = () => {
 
           <button
             type="submit"
-            className="w-full flex items-center justify-center gap-3 bg-primary-600 hover:bg-primary-500 text-white px-8 py-5 rounded-2xl font-bold shadow-xl shadow-primary-900/20 transition-all text-xs uppercase tracking-[0.2em] font-ui pt-6 mt-4"
+            className="w-full flex items-center justify-center gap-3 bg-primary-600 hover:bg-primary-500 text-white px-8 py-5 rounded-2xl font-bold shadow-xl shadow-primary-900/20 transition-all text-xs uppercase tracking-[0.2em] font-sans pt-6 mt-4"
           >
             <Save size={18} /> {t('common.save', 'Guardar Alterações')}
           </button>

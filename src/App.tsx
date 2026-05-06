@@ -32,10 +32,10 @@ function AppContent() {
   if (appMode === 'client') {
 
     return (
-      <div className="flex flex-col min-h-screen bg-white font-sans text-gray-900">
-        <header className="bg-gray-50/80 backdrop-blur-xl border-b border-gray-200 p-4 md:px-8 sticky top-0 z-10 flex justify-between items-center shadow-2xl">
+      <div className="flex flex-col min-h-screen bg-gray-50/50 font-sans text-gray-900">
+        <header className="bg-white/90 backdrop-blur-xl border-b border-gray-200 p-4 md:px-8 sticky top-0 z-10 flex justify-between items-center shadow-sm">
            <div className="flex items-center gap-4">
-             <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-primary-100 bg-primary-50 text-primary-600 shadow-md">
+             <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-primary-100 bg-primary-50 text-primary-600 shadow-sm">
                <CalendarCheck className="w-6 h-6" />
              </div>
              <div className="hidden sm:block">
@@ -47,13 +47,13 @@ function AppContent() {
            <div className="flex items-center gap-2 md:gap-4">
              <button 
                onClick={() => setCurrentView('book')}
-               className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-all px-4 py-3 rounded-xl border font-ui ${currentView === 'book' ? 'text-primary-400 border-primary-400/30 bg-primary-400/10' : 'text-gray-600 border-transparent hover:text-primary-400 hover:bg-gray-100'}`}
+               className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-all px-4 py-3 rounded-xl border ${currentView === 'book' ? 'text-primary-700 border-primary-200 bg-primary-50 shadow-sm' : 'text-gray-600 border-transparent hover:text-primary-600 hover:bg-gray-50 hover:border-gray-200'}`}
              >
                Agendar
              </button>
              <button 
                onClick={() => setCurrentView('my-appointments')}
-               className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-all px-4 py-3 rounded-xl border font-ui ${currentView === 'my-appointments' ? 'text-primary-400 border-primary-400/30 bg-primary-400/10' : 'text-gray-600 border-transparent hover:text-primary-400 hover:bg-gray-100'}`}
+               className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-all px-4 py-3 rounded-xl border ${currentView === 'my-appointments' ? 'text-primary-700 border-primary-200 bg-primary-50 shadow-sm' : 'text-gray-600 border-transparent hover:text-primary-600 hover:bg-gray-50 hover:border-gray-200'}`}
              >
                Consultar
              </button>
@@ -62,7 +62,7 @@ function AppContent() {
 
              <button 
                onClick={() => setAppMode('landing')}
-               className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-600 hover:text-secondary-400 transition-all bg-gray-50 px-4 md:px-6 py-3 rounded-full border border-gray-200 shadow-lg font-ui"
+               className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-600 hover:text-secondary-400 transition-all bg-gray-50 px-4 md:px-6 py-3 rounded-full border border-gray-200 shadow-lg font-sans"
              >
                <ArrowLeft size={16} /> <span>Voltar</span>
              </button>
