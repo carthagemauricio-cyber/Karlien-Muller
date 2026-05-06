@@ -8,28 +8,29 @@
   --font-display: "Cormorant Garamond", serif;
   --font-ui: "Montserrat", sans-serif;
 
-  /* Pink & Lilac Palette */
-  --color-primary-50: #fff0f6;
-  --color-primary-100: #ffdeeb;
-  --color-primary-200: #ffbdd9;
-  --color-primary-300: #ff8abf;
-  --color-primary-400: #ff4fa3; /* Core Pink */
-  --color-primary-500: #f72585;
-  --color-primary-600: #d01d6f;
-  --color-primary-700: #a11454;
-  --color-primary-800: #811246;
-  --color-primary-900: #6d123e;
+  /* Primary: Blue Palette */
+  --color-primary-50: #eef6ff;
+  --color-primary-100: #daefff;
+  --color-primary-200: #bcdeff;
+  --color-primary-300: #8bc7ff;
+  --color-primary-400: #51a5ff;
+  --color-primary-500: #2b80ff; /* Base */
+  --color-primary-600: #105df5; /* Matches logo dark blue */
+  --color-primary-700: #0a46ce;
+  --color-primary-800: #0e3aa5;
+  --color-primary-900: #123381;
 
-  --color-secondary-50: #f5f0ff;
-  --color-secondary-100: #ece0ff;
-  --color-secondary-200: #dcc8ff;
-  --color-secondary-300: #c8a2ff; /* Core Lilac */
-  --color-secondary-400: #b580ff;
-  --color-secondary-500: #a15cff;
-  --color-secondary-600: #8e38ff;
-  --color-secondary-700: #7a22e6;
-  --color-secondary-800: #631bbd;
-  --color-secondary-900: #521999;
+  /* Secondary: Green Palette */
+  --color-secondary-50: #ebfef2;
+  --color-secondary-100: #d0fbe0;
+  --color-secondary-200: #a4f5c5;
+  --color-secondary-300: #6aec9d;
+  --color-secondary-400: #34d876;
+  --color-secondary-500: #10ba54; /* Base */
+  --color-secondary-600: #069c43; /* Matches logo green */
+  --color-secondary-700: #077b37;
+  --color-secondary-800: #09612e;
+  --color-secondary-900: #095028;
 
   /* Legacy Mappings to minimize breakage, mapping gold to primary/secondary */
   --color-gold-50: var(--color-primary-50);
@@ -77,8 +78,8 @@
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--color-charcoal-900);
-  color: var(--color-charcoal-100);
+  background-color: var(--color-charcoal-50);
+  color: var(--color-charcoal-900);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -88,17 +89,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .luxury-text-gradient {
-  background: linear-gradient(135deg, #FF4FA3 0%, #C8A2FF 100%);
+  background: linear-gradient(135deg, var(--color-primary-600) 0%, var(--color-secondary-500) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .glass-panel {
-  background: rgba(26, 26, 26, 0.7);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 79, 163, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
 }
 
 /* Hide scrollbar for clean look in some lists */

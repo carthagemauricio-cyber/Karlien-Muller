@@ -10,7 +10,7 @@ import { ServicesPage } from './pages/Services';
 import { CalendarView } from './pages/CalendarView';
 import { Landing } from './pages/Landing';
 import { Settings } from './pages/Settings';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, CalendarCheck } from 'lucide-react';
 
 function AppContent() {
   const [appMode, setAppMode] = useState<'landing' | 'client' | 'admin'>('landing');
@@ -32,37 +32,37 @@ function AppContent() {
   if (appMode === 'client') {
 
     return (
-      <div className="flex flex-col min-h-screen bg-charcoal-900 font-sans text-charcoal-100">
-        <header className="bg-charcoal-800/80 backdrop-blur-xl border-b border-charcoal-700 p-4 md:px-8 sticky top-0 z-10 flex justify-between items-center shadow-2xl">
+      <div className="flex flex-col min-h-screen bg-white font-sans text-gray-900">
+        <header className="bg-gray-50/80 backdrop-blur-xl border-b border-gray-200 p-4 md:px-8 sticky top-0 z-10 flex justify-between items-center shadow-2xl">
            <div className="flex items-center gap-4">
-             <div className="flex h-12 w-12 items-center justify-center rounded-full border border-primary-400/30 bg-charcoal-700 text-primary-400 shadow-lg">
-               <span className="text-xl font-serif font-light -tracking-widest">KM</span>
+             <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-primary-100 bg-primary-50 text-primary-600 shadow-md">
+               <CalendarCheck className="w-6 h-6" />
              </div>
              <div className="hidden sm:block">
-               <h1 className="text-lg font-serif font-medium text-white tracking-widest uppercase leading-tight">Karlien Muller</h1>
-               <p className="text-[9px] font-bold text-secondary-400/60 tracking-[0.3em] uppercase leading-tight">Hair Studio</p>
+               <h1 className="text-xl font-bold text-primary-900 tracking-tight leading-tight">Marca<span className="text-secondary-500">Já</span></h1>
+               <p className="text-[10px] font-medium text-gray-500 tracking-widest uppercase leading-tight mt-0.5">Agendamentos</p>
              </div>
            </div>
            
            <div className="flex items-center gap-2 md:gap-4">
              <button 
                onClick={() => setCurrentView('book')}
-               className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-all px-4 py-3 rounded-xl border font-ui ${currentView === 'book' ? 'text-primary-400 border-primary-400/30 bg-primary-400/10' : 'text-charcoal-400 border-transparent hover:text-primary-400 hover:bg-charcoal-700'}`}
+               className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-all px-4 py-3 rounded-xl border font-ui ${currentView === 'book' ? 'text-primary-400 border-primary-400/30 bg-primary-400/10' : 'text-gray-600 border-transparent hover:text-primary-400 hover:bg-gray-100'}`}
              >
                Agendar
              </button>
              <button 
                onClick={() => setCurrentView('my-appointments')}
-               className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-all px-4 py-3 rounded-xl border font-ui ${currentView === 'my-appointments' ? 'text-primary-400 border-primary-400/30 bg-primary-400/10' : 'text-charcoal-400 border-transparent hover:text-primary-400 hover:bg-charcoal-700'}`}
+               className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-all px-4 py-3 rounded-xl border font-ui ${currentView === 'my-appointments' ? 'text-primary-400 border-primary-400/30 bg-primary-400/10' : 'text-gray-600 border-transparent hover:text-primary-400 hover:bg-gray-100'}`}
              >
                Consultar
              </button>
 
-             <div className="w-px h-6 bg-charcoal-700 mx-1 md:mx-2 hidden sm:block"></div>
+             <div className="w-px h-6 bg-gray-100 mx-1 md:mx-2 hidden sm:block"></div>
 
              <button 
                onClick={() => setAppMode('landing')}
-               className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-charcoal-400 hover:text-secondary-400 transition-all bg-charcoal-800 px-4 md:px-6 py-3 rounded-full border border-charcoal-700 shadow-lg font-ui"
+               className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-600 hover:text-secondary-400 transition-all bg-gray-50 px-4 md:px-6 py-3 rounded-full border border-gray-200 shadow-lg font-ui"
              >
                <ArrowLeft size={16} /> <span>Voltar</span>
              </button>
@@ -81,7 +81,7 @@ function AppContent() {
   };
 
   return (
-    <div className="flex h-screen bg-charcoal-900 overflow-hidden font-sans text-charcoal-100">
+    <div className="flex h-screen bg-white overflow-hidden font-sans text-gray-900">
       <Sidebar 
 
         currentView={currentView} 

@@ -33,9 +33,9 @@ export const ServicesPage = () => {
     <div className="p-6 md:p-10 max-w-6xl mx-auto pb-24 md:pb-10 relative min-h-screen">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
         <div>
-          <h1 className="text-4xl font-serif font-medium text-white mb-2">{t('management.services')}</h1>
+          <h1 className="text-4xl font-sans font-medium text-gray-900 mb-2">{t('management.services')}</h1>
           <div className="h-1 w-20 bg-primary-400 mb-2"></div>
-          <p className="text-charcoal-400 font-light">{t('management.services_subtitle')}</p>
+          <p className="text-gray-600 font-light">{t('management.services_subtitle')}</p>
         </div>
         <button 
           onClick={() => setEditingService('new')}
@@ -46,9 +46,9 @@ export const ServicesPage = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {services.map((service) => (
-          <div key={service.id} className="bg-charcoal-800 rounded-[40px] p-8 shadow-2xl border border-charcoal-700 hover:border-primary-400/30 transition-all group flex flex-col">
+          <div key={service.id} className="bg-gray-50 rounded-[40px] p-8 shadow-2xl border border-gray-200 hover:border-primary-400/30 transition-all group flex flex-col">
             <div className="flex justify-between items-start mb-6">
-              <h3 className="text-2xl font-serif font-medium text-white group-hover:text-primary-200 transition-colors">
+              <h3 className="text-2xl font-sans font-medium text-gray-900 group-hover:text-primary-200 transition-colors">
                 {service.name}
               </h3>
             </div>
@@ -58,12 +58,12 @@ export const ServicesPage = () => {
                   <Clock size={14} className="text-primary-400/40" />
                   {service.duration} {t('management.minutes')}
                 </div>
-                <div className="text-3xl font-serif font-medium text-secondary-400">
+                <div className="text-3xl font-sans font-medium text-secondary-400">
                   {formatCurrency(service.price)}
                 </div>
             </div>
 
-            <div className="flex gap-4 pt-6 border-t border-charcoal-700">
+            <div className="flex gap-4 pt-6 border-t border-gray-200">
               <button 
                 onClick={() => setEditingService(service)}
                 className="flex-1 py-3 text-[10px] font-bold text-primary-400/80 hover:text-primary-400 transition-colors uppercase tracking-widest border border-primary-400/10 rounded-2xl bg-primary-400/5 hover:bg-primary-400/10 font-ui text-xs">
@@ -97,15 +97,15 @@ export const ServicesPage = () => {
       )}
 
       {deletingServiceId && (
-        <div className="fixed inset-0 z-[60] bg-charcoal-950/80 backdrop-blur-xl flex items-center justify-center p-4">
-          <div className="bg-charcoal-800 rounded-[40px] p-10 w-full max-w-sm shadow-2xl border border-charcoal-700 animate-in fade-in zoom-in-95 overflow-hidden relative">
+        <div className="fixed inset-0 z-[60] bg-gray-100/90 backdrop-blur-xl flex items-center justify-center p-4">
+          <div className="bg-gray-50 rounded-[40px] p-10 w-full max-w-sm shadow-2xl border border-gray-200 animate-in fade-in zoom-in-95 overflow-hidden relative">
             <div className="absolute top-0 left-0 w-full h-1 bg-rose-500"></div>
-            <h3 className="text-2xl font-serif text-white mb-3 font-medium">{t('management.delete_title')}</h3>
-            <p className="text-charcoal-400 text-sm font-light leading-relaxed mb-8">{t('management.delete_confirm')}</p>
+            <h3 className="text-2xl font-sans text-gray-900 mb-3 font-medium">{t('management.delete_title')}</h3>
+            <p className="text-gray-600 text-sm font-light leading-relaxed mb-8">{t('management.delete_confirm')}</p>
             <div className="flex gap-4">
               <button 
                 onClick={() => setDeletingServiceId(null)}
-                className="flex-1 px-6 py-4 bg-charcoal-700 hover:bg-charcoal-600 text-charcoal-200 rounded-2xl font-bold text-[10px] uppercase tracking-widest transition-all"
+                className="flex-1 px-6 py-4 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-2xl font-bold text-[10px] uppercase tracking-widest transition-all"
               >
                 {t('common.cancel')}
               </button>
@@ -145,14 +145,14 @@ const ServiceModal = ({ service, onClose, onSave }: { service: Service | null, o
   };
 
   return (
-    <div className="fixed inset-0 z-[60] bg-charcoal-950/80 backdrop-blur-xl flex items-center justify-center p-4">
-      <div className="bg-charcoal-800 rounded-[40px] p-8 md:p-12 w-full max-w-lg shadow-2xl border border-charcoal-700 animate-in fade-in slide-in-from-bottom-8 relative">
+    <div className="fixed inset-0 z-[60] bg-gray-100/90 backdrop-blur-xl flex items-center justify-center p-4">
+      <div className="bg-gray-50 rounded-[40px] p-8 md:p-12 w-full max-w-lg shadow-2xl border border-gray-200 animate-in fade-in slide-in-from-bottom-8 relative">
         <div className="flex justify-between items-center mb-10">
           <div>
-            <h2 className="text-3xl font-serif text-white">{service ? t('management.edit_service') : t('management.new_service')}</h2>
+            <h2 className="text-3xl font-sans text-gray-900">{service ? t('management.edit_service') : t('management.new_service')}</h2>
             <div className="h-0.5 w-12 bg-primary-400 mt-2"></div>
           </div>
-          <button onClick={onClose} className="p-3 bg-charcoal-700 rounded-full hover:bg-charcoal-600 transition-all text-charcoal-400 border border-charcoal-600">
+          <button onClick={onClose} className="p-3 bg-gray-100 rounded-full hover:bg-gray-200 transition-all text-gray-600 border border-gray-300">
              <X size={20} />
           </button>
         </div>
@@ -164,7 +164,7 @@ const ServiceModal = ({ service, onClose, onSave }: { service: Service | null, o
               type="text" 
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-6 py-4 bg-charcoal-900 border border-charcoal-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400/30 transition-all font-serif text-xl text-white placeholder-charcoal-700"
+              className="w-full px-6 py-4 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400/30 transition-all font-sans text-xl text-gray-900 placeholder-gray-400"
               placeholder={t('management.service_name_placeholder', 'ex: Madeixas')}
             />
           </div>
@@ -176,7 +176,7 @@ const ServiceModal = ({ service, onClose, onSave }: { service: Service | null, o
                 type="number" 
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
-                className="w-full px-6 py-4 bg-charcoal-900 border border-charcoal-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400/30 transition-all font-mono text-xl text-white"
+                className="w-full px-6 py-4 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400/30 transition-all font-mono text-xl text-gray-900"
               />
             </div>
             <div>
@@ -185,7 +185,7 @@ const ServiceModal = ({ service, onClose, onSave }: { service: Service | null, o
                 type="number" 
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                className="w-full px-6 py-4 bg-charcoal-900 border border-charcoal-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400/30 transition-all font-mono text-xl text-white"
+                className="w-full px-6 py-4 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400/30 transition-all font-mono text-xl text-gray-900"
               />
             </div>
           </div>

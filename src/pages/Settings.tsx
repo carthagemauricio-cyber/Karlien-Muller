@@ -38,19 +38,19 @@ export const Settings = () => {
   return (
     <div className="p-6 md:p-10 max-w-4xl mx-auto pb-24 md:pb-10 relative min-h-screen">
       <div className="mb-10">
-        <h1 className="text-4xl font-serif font-medium text-white mb-2">{t('settings.title', 'Configurações de Segurança')}</h1>
+        <h1 className="text-4xl font-sans font-medium text-gray-900 mb-2">{t('settings.title', 'Configurações de Segurança')}</h1>
         <div className="h-1 w-20 bg-primary-400 mb-2"></div>
-        <p className="text-charcoal-400 font-light">{t('settings.subtitle', 'Gerencie as credenciais de acesso da equipe')}</p>
+        <p className="text-gray-600 font-light">{t('settings.subtitle', 'Gerencie as credenciais de acesso da equipe')}</p>
       </div>
 
-      <div className="bg-charcoal-800 rounded-[40px] p-8 md:p-10 shadow-2xl border border-charcoal-700 max-w-lg">
+      <div className="bg-gray-50 rounded-[40px] p-8 md:p-10 shadow-2xl border border-gray-200 max-w-lg">
         <div className="flex items-center gap-4 mb-8">
           <div className="w-12 h-12 bg-primary-400/10 rounded-full flex items-center justify-center text-primary-400">
             <Lock size={24} />
           </div>
           <div>
-            <h2 className="text-2xl font-serif font-medium text-white">{t('settings.change_password', 'Alterar Palavra-passe')}</h2>
-            <p className="text-sm text-charcoal-400 font-light">{t('settings.change_password_desc', 'Defina uma nova palavra-passe para a área da equipe')}</p>
+            <h2 className="text-2xl font-sans font-medium text-gray-900">{t('settings.change_password', 'Alterar Palavra-passe')}</h2>
+            <p className="text-sm text-gray-600 font-light">{t('settings.change_password_desc', 'Defina uma nova palavra-passe para a área da equipe')}</p>
           </div>
         </div>
 
@@ -63,7 +63,7 @@ export const Settings = () => {
               type="password"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
-              className="w-full bg-charcoal-900 border border-charcoal-700 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-primary-400/50 transition-colors"
+              className="w-full bg-white border border-gray-200 rounded-2xl px-6 py-4 text-gray-900 focus:outline-none focus:border-primary-400/50 transition-colors"
               required
             />
           </div>
@@ -76,7 +76,7 @@ export const Settings = () => {
               type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full bg-charcoal-900 border border-charcoal-700 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-primary-400/50 transition-colors"
+              className="w-full bg-white border border-gray-200 rounded-2xl px-6 py-4 text-gray-900 focus:outline-none focus:border-primary-400/50 transition-colors"
               required
             />
           </div>
@@ -89,7 +89,7 @@ export const Settings = () => {
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full bg-charcoal-900 border border-charcoal-700 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-primary-400/50 transition-colors"
+              className="w-full bg-white border border-gray-200 rounded-2xl px-6 py-4 text-gray-900 focus:outline-none focus:border-primary-400/50 transition-colors"
               required
             />
           </div>

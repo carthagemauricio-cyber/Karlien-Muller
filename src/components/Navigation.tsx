@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Users, Scissors, CalendarPlus, CalendarDays, LogOut, Settings as SettingsIcon } from 'lucide-react';
+import { Home, Users, Scissors, CalendarPlus, CalendarDays, LogOut, Settings as SettingsIcon, CalendarCheck } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from './LanguageSwitcher';
@@ -19,10 +19,10 @@ const NavItem = ({ icon, label, isActive, onClick }: NavItemProps) => {
         "flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-300 group",
         isActive 
           ? "bg-primary-400/10 text-primary-400 shadow-sm border border-primary-400/20" 
-          : "text-charcoal-400 hover:bg-charcoal-700 hover:text-secondary-200"
+          : "text-gray-600 hover:bg-gray-100 hover:text-secondary-200"
       )}
     >
-      <div className={cn("p-1.5 rounded-xl transition-colors", isActive ? "bg-primary-400/20" : "group-hover:bg-charcoal-600")}>
+      <div className={cn("p-1.5 rounded-xl transition-colors", isActive ? "bg-primary-400/20" : "group-hover:bg-gray-200")}>
         {icon}
       </div>
       <span className={cn("font-medium tracking-wide", isActive ? "font-semibold" : "")}>{label}</span>
@@ -43,19 +43,19 @@ export const Sidebar = ({
   const { t } = useTranslation();
 
   return (
-    <aside className="hidden h-screen w-72 flex-col border-r border-charcoal-700 bg-charcoal-800 p-6 glass-panel md:flex sticky top-0">
+    <aside className="hidden h-screen w-72 flex-col border-r border-gray-200 bg-gray-50 p-6 glass-panel md:flex sticky top-0">
       <div className="mb-4 flex flex-col gap-4">
         <div className="flex items-center gap-4 px-2">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-primary-400/30 bg-charcoal-700 text-primary-400 shadow-lg shadow-black/50 shrink-0">
-            <span className="text-xl font-serif font-light -tracking-widest">KM</span>
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-primary-100 bg-primary-50 text-primary-600 shadow-md shrink-0">
+            <CalendarCheck className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-[15px] font-serif font-medium text-white tracking-[0.1em] uppercase leading-tight">Karlien Muller</h1>
-            <p className="text-[8px] font-bold text-secondary-400/60 tracking-[0.3em] uppercase">Hair Studio</p>
+            <h1 className="text-xl font-bold text-primary-900 tracking-tight leading-tight">Marca<span className="text-secondary-500">Já</span></h1>
+            <p className="text-[10px] font-medium text-gray-500 tracking-[0.2em] uppercase leading-tight mt-0.5">Agendamentos</p>
           </div>
         </div>
         <div className="px-2">
-          <LanguageSwitcher className="w-full justify-center bg-charcoal-700 text-secondary-100 border-charcoal-600" />
+          <LanguageSwitcher className="w-full justify-center bg-gray-100 text-secondary-100 border-gray-300" />
         </div>
       </div>
 
@@ -79,7 +79,7 @@ export const Sidebar = ({
           onClick={() => setCurrentView('book')} 
         />
         
-        <div className="mt-8 mb-2 px-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-charcoal-500">
+        <div className="mt-8 mb-2 px-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-500">
           {t('navigation.management', 'Gestão')}
         </div>
         <NavItem 
@@ -94,7 +94,7 @@ export const Sidebar = ({
           isActive={currentView === 'services'} 
           onClick={() => setCurrentView('services')} 
         />
-        <div className="mt-4 mb-2 px-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-charcoal-500">
+        <div className="mt-4 mb-2 px-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-500">
           {t('navigation.system', 'Sistema')}
         </div>
         <NavItem 
@@ -105,10 +105,10 @@ export const Sidebar = ({
         />
       </nav>
 
-      <div className="pt-6 border-t border-charcoal-700 mt-auto">
+      <div className="pt-6 border-t border-gray-200 mt-auto">
         <button
           onClick={onBackToLanding}
-          className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-charcoal-400 hover:bg-rose-500/10 hover:text-rose-400 transition-all group"
+          className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-gray-600 hover:bg-rose-500/10 hover:text-rose-400 transition-all group"
         >
           <div className="p-1.5 rounded-xl group-hover:bg-rose-500/20 transition-colors">
             <LogOut size={20} />
@@ -139,7 +139,7 @@ export const MobileNav = ({
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 glass-panel border-t border-charcoal-700 bg-charcoal-800/90 p-2 pb-safe md:hidden backdrop-blur-md overflow-x-auto no-scrollbar">
+    <div className="fixed bottom-0 left-0 right-0 z-50 glass-panel border-t border-gray-200 bg-gray-50/90 p-2 pb-safe md:hidden backdrop-blur-md overflow-x-auto no-scrollbar">
       <div className="flex justify-start min-w-max px-2 sm:justify-around items-center relative gap-2">
         {navItems.map((item) => {
           const isActive = currentView === item.id;
@@ -150,7 +150,7 @@ export const MobileNav = ({
               onClick={() => setCurrentView(item.id)}
               className={cn(
                 "flex flex-col items-center justify-center p-2 rounded-xl transition-all w-16",
-                isActive ? "text-primary-400" : "text-charcoal-500"
+                isActive ? "text-primary-400" : "text-gray-500"
               )}
             >
               <div className={cn(

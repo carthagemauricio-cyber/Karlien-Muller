@@ -161,14 +161,14 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
     const profName = selectedProfessional?.name || '';
     
     return (
-      <div className="flex-1 flex flex-col items-center justify-center p-6 h-full min-h-screen bg-charcoal-900 md:bg-transparent pb-32 animate-in slide-in-from-bottom-8 fade-in duration-500">
-        <div className="w-full max-w-md text-center flex flex-col items-center bg-charcoal-800 md:rounded-[40px] md:shadow-2xl md:border md:border-charcoal-700 p-10 flex-1 md:flex-none justify-center border-primary-400/10">
+      <div className="flex-1 flex flex-col items-center justify-center p-6 h-full min-h-screen bg-white md:bg-transparent pb-32 animate-in slide-in-from-bottom-8 fade-in duration-500">
+        <div className="w-full max-w-md text-center flex flex-col items-center bg-gray-50 md:rounded-[40px] md:shadow-2xl md:border md:border-gray-200 p-10 flex-1 md:flex-none justify-center border-primary-400/10">
           <div className="w-24 h-24 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center mb-8 animate-in zoom-in-50 duration-500 shadow-xl shadow-emerald-500/10 border border-emerald-500/20">
             <CheckCircle2 size={48} />
           </div>
-          <h2 className="text-4xl font-serif text-white mb-4 tracking-tight">{t('booking.success_title')}</h2>
+          <h2 className="text-4xl font-sans text-gray-900 mb-4 tracking-tight">{t('booking.success_title')}</h2>
           <div className="h-0.5 w-16 bg-primary-400 mx-auto mb-6"></div>
-          <p className="text-charcoal-300 mb-8 leading-relaxed px-2 text-base font-light">
+          <p className="text-gray-700 mb-8 leading-relaxed px-2 text-base font-light">
             Seu agendamento foi enviado e está aguardando confirmação.
             <br/><br/>
             <span className="text-secondary-400 font-medium">Você pode acompanhar o status na aba Meus Agendamentos.</span>
@@ -186,7 +186,7 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
             </button>
             <button 
               onClick={resetForm}
-              className="w-full py-4 text-secondary-300 font-bold hover:bg-charcoal-700 rounded-2xl transition-all uppercase tracking-widest text-xs border border-charcoal-700 font-ui"
+              className="w-full py-4 text-secondary-300 font-bold hover:bg-gray-100 rounded-2xl transition-all uppercase tracking-widest text-xs border border-gray-200 font-ui"
             >
               {t('booking.new_booking')}
             </button>
@@ -194,7 +194,7 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
         </div>
         
         {/* Mobile Sticky Bottom Section */}
-        <div className="md:hidden fixed bottom-0 left-0 right-0 p-6 bg-charcoal-800 border-t border-charcoal-700 shadow-2xl animate-in slide-in-from-bottom-full duration-500 delay-300 z-50 rounded-t-[40px]">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 p-6 bg-gray-50 border-t border-gray-200 shadow-2xl animate-in slide-in-from-bottom-full duration-500 delay-300 z-50 rounded-t-[40px]">
           <div className="max-w-md mx-auto space-y-4">
             <button 
               onClick={() => {
@@ -207,7 +207,7 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
             </button>
             <button 
               onClick={resetForm}
-              className="w-full py-4 text-secondary-300 font-bold active:bg-charcoal-700 rounded-2xl transition-all uppercase tracking-widest text-xs border border-charcoal-700 font-ui"
+              className="w-full py-4 text-secondary-300 font-bold active:bg-gray-100 rounded-2xl transition-all uppercase tracking-widest text-xs border border-gray-200 font-ui"
             >
               {t('booking.new_booking')}
             </button>
@@ -218,17 +218,17 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-charcoal-900 pb-40 relative">
+    <div className="flex flex-col min-h-screen bg-white pb-40 relative">
       {/* Header Mobile Step Indicator */}
-      <div className="bg-charcoal-800/80 backdrop-blur-xl px-4 md:px-6 py-6 shadow-2xl sticky top-0 z-20 flex items-center gap-4 border-b border-charcoal-700">
+      <div className="bg-gray-50/80 backdrop-blur-xl px-4 md:px-6 py-6 shadow-2xl sticky top-0 z-20 flex items-center gap-4 border-b border-gray-200">
          {step > 1 && (
-           <button onClick={handleBack} className="p-2 -ml-2 rounded-full hover:bg-charcoal-700 transition-all text-primary-400 shrink-0 border border-charcoal-700">
+           <button onClick={handleBack} className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition-all text-primary-400 shrink-0 border border-gray-200">
              <ArrowLeft size={20} />
            </button>
          )}
          <div className="flex-1">
            <p className="text-[10px] font-bold text-primary-400 uppercase tracking-[0.3em] mb-1 opacity-70">{t('booking.step_of', { current: step, total: 5 })}</p>
-           <h2 className="text-xl md:text-2xl font-serif font-medium text-white leading-none">
+           <h2 className="text-xl md:text-2xl font-sans font-medium text-gray-900 leading-none">
              {step === 1 && t('booking.select_service')}
              {step === 2 && t('booking.select_professional')}
              {step === 3 && t('booking.select_date')}
@@ -237,7 +237,7 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
            </h2>
          </div>
          {/* Simple visual progress pill */}
-         <div className="hidden sm:flex bg-charcoal-700 rounded-full h-1 w-32 overflow-hidden shrink-0">
+         <div className="hidden sm:flex bg-gray-100 rounded-full h-1 w-32 overflow-hidden shrink-0">
             <div className="bg-primary-500 h-full transition-all duration-500" style={{ width: `${(step / 5) * 100}%` }}></div>
          </div>
       </div>
@@ -248,8 +248,8 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
         {step === 1 && (
           <div className="space-y-4">
              <div className="flex items-center gap-3 mb-6">
-                <Scissors className="text-charcoal-500" size={18} />
-                <h4 className="text-xs font-bold text-charcoal-500 uppercase tracking-[0.1em]">{t('booking.all_services', 'All Services')}</h4>
+                <Scissors className="text-gray-500" size={18} />
+                <h4 className="text-xs font-bold text-gray-500 uppercase tracking-[0.1em]">{t('booking.all_services', 'All Services')}</h4>
              </div>
 
             {services.map(service => (
@@ -257,23 +257,23 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
                 key={service.id}
                 onClick={() => { setServiceId(service.id); handleNext(); }}
                 className={cn(
-                  "w-full text-left bg-charcoal-800 p-6 rounded-[32px] border-2 transition-all flex items-center gap-5 group",
+                  "w-full text-left bg-gray-50 p-6 rounded-[32px] border-2 transition-all flex items-center gap-5 group",
                   serviceId === service.id 
                     ? "border-primary-400 bg-primary-400/5 shadow-2xl shadow-primary-900/20 scale-[1.02]" 
-                    : "border-charcoal-700 text-charcoal-300 hover:border-primary-400/30 hover:bg-charcoal-800/80"
+                    : "border-gray-200 text-gray-700 hover:border-primary-400/30 hover:bg-gray-50/80"
                 )}
               >
                 <div className="w-16 h-16 rounded-full bg-primary-400/10 text-primary-400 flex items-center justify-center shrink-0 border border-primary-400/20 group-hover:scale-110 transition-transform">
                   <Scissors size={24} />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-xl font-serif font-medium text-white group-hover:text-primary-200 transition-colors">{service.name}</h3>
-                  <div className="flex items-center gap-2 text-xs text-charcoal-500 mt-1 font-medium tracking-wide">
+                  <h3 className="text-xl font-sans font-medium text-gray-900 group-hover:text-primary-200 transition-colors">{service.name}</h3>
+                  <div className="flex items-center gap-2 text-xs text-gray-500 mt-1 font-medium tracking-wide">
                     <Clock size={16} className="text-primary-400/50" /> {service.duration} MIN
                   </div>
                 </div>
                 <div className="text-right shrink-0">
-                  <p className="text-xl font-serif font-medium text-primary-400">{formatCurrency(service.price)}</p>
+                  <p className="text-xl font-sans font-medium text-primary-400">{formatCurrency(service.price)}</p>
                 </div>
               </button>
             ))}
@@ -289,24 +289,24 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
                   key={prof.id}
                   onClick={() => { setProfessionalId(prof.id); handleNext(); }}
                   className={cn(
-                    "w-full text-left bg-charcoal-800 p-6 rounded-[32px] border-2 transition-all flex items-center gap-5 group",
+                    "w-full text-left bg-gray-50 p-6 rounded-[32px] border-2 transition-all flex items-center gap-5 group",
                     professionalId === prof.id 
                       ? "border-primary-400 bg-primary-400/5 shadow-2xl shadow-primary-900/20 scale-[1.02]" 
-                      : "border-charcoal-700 text-charcoal-300 hover:border-primary-400/30 hover:bg-charcoal-800/80"
+                      : "border-gray-200 text-gray-700 hover:border-primary-400/30 hover:bg-gray-50/80"
                   )}
                 >
                   <img src={prof.photo} alt={prof.name} className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover shadow-2xl border-2 border-primary-400/20 group-hover:border-primary-400 transition-all" />
                   <div className="flex-1">
-                    <h3 className="text-xl font-serif font-medium text-white group-hover:text-primary-200 transition-colors">{prof.name}</h3>
-                    <p className="text-xs text-charcoal-500 mt-2 font-medium tracking-widest uppercase">{t('booking.specialist_available')}</p>
+                    <h3 className="text-xl font-sans font-medium text-gray-900 group-hover:text-primary-200 transition-colors">{prof.name}</h3>
+                    <p className="text-xs text-gray-500 mt-2 font-medium tracking-widest uppercase">{t('booking.specialist_available')}</p>
                   </div>
-                  <ChevronRight className="text-charcoal-600 group-hover:text-primary-400 transition-colors" size={24} />
+                  <ChevronRight className="text-gray-400 group-hover:text-primary-400 transition-colors" size={24} />
                 </button>
               ))
             ) : (
-              <div className="text-center p-12 bg-charcoal-800 rounded-[40px] border border-charcoal-700 shadow-2xl">
-                <User size={48} className="text-charcoal-700 mx-auto mb-6" />
-                <p className="text-charcoal-400 text-lg font-light">Nenhum profissional disponível para este serviço no momento.</p>
+              <div className="text-center p-12 bg-gray-50 rounded-[40px] border border-gray-200 shadow-2xl">
+                <User size={48} className="text-gray-400 mx-auto mb-6" />
+                <p className="text-gray-600 text-lg font-light">Nenhum profissional disponível para este serviço no momento.</p>
               </div>
             )}
           </div>
@@ -327,16 +327,16 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
                     onClick={() => { setDate(dateStr); handleNext(); }}
                     className={cn(
                       "flex flex-col items-center justify-center p-6 rounded-[32px] border-2 transition-all h-36 md:h-40 relative group",
-                      !worksThisDay ? "opacity-30 cursor-not-allowed bg-charcoal-800 border-transparent text-charcoal-400" :
+                      !worksThisDay ? "opacity-30 cursor-not-allowed bg-gray-50 border-transparent text-gray-600" :
                       date === dateStr 
                        ? "border-primary-500 bg-primary-400 shadow-2xl shadow-primary-900/40 text-white scale-[1.05]" 
-                       : "bg-charcoal-800 border-charcoal-700 hover:border-primary-400/50 shadow-xl text-charcoal-300"
+                       : "bg-gray-50 border-gray-200 hover:border-primary-400/50 shadow-xl text-gray-700"
                     )}
                   >
-                    <span className={cn("text-[10px] uppercase tracking-[0.2em] font-bold mb-3", date === dateStr ? "text-white/80" : "text-charcoal-500 group-hover:text-primary-400/70")}>
+                    <span className={cn("text-[10px] uppercase tracking-[0.2em] font-bold mb-3", date === dateStr ? "text-white/80" : "text-gray-500 group-hover:text-primary-400/70")}>
                       {format(d, 'eee', { locale: currentLocale })}
                     </span>
-                    <span className="text-3xl md:text-4xl font-serif font-medium leading-none mb-2">
+                    <span className="text-3xl md:text-4xl font-sans font-medium leading-none mb-2">
                       {format(d, 'dd')}
                     </span>
                     <span className={cn("text-xs font-bold uppercase tracking-widest", date === dateStr ? "text-white/70" : "text-secondary-400/60")}>
@@ -344,7 +344,7 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
                     </span>
                     {!worksThisDay && (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="bg-charcoal-900/80 text-charcoal-500 text-[8px] px-2 py-1 rounded-full font-bold uppercase tracking-widest border border-charcoal-700">{t('booking.off_day')}</span>
+                        <span className="bg-white/80 text-gray-500 text-[8px] px-2 py-1 rounded-full font-bold uppercase tracking-widest border border-gray-200">{t('booking.off_day')}</span>
                       </div>
                     )}
                   </button>
@@ -355,8 +355,8 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
 
         {/* STEP 4: TIME */}
         {step === 4 && (
-          <div className="bg-charcoal-800 p-8 md:p-10 rounded-[40px] border border-charcoal-700 shadow-2xl">
-            <h3 className="text-center text-charcoal-400 mb-8 font-light tracking-wide text-lg">
+          <div className="bg-gray-50 p-8 md:p-10 rounded-[40px] border border-gray-200 shadow-2xl">
+            <h3 className="text-center text-gray-600 mb-8 font-light tracking-wide text-lg">
               {t('booking.times_at', { date: format(parseISO(date), "dd 'de' MMMM", { locale: currentLocale }) })}
             </h3>
 
@@ -370,16 +370,16 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
                       "py-5 rounded-[24px] border-2 font-mono text-xl font-medium transition-all group",
                       time === t 
                         ? "border-primary-500 bg-primary-400 text-white shadow-2xl shadow-primary-900/40 scale-110" 
-                        : "bg-charcoal-900/50 border-charcoal-700 text-primary-400 hover:border-primary-400/30 hover:text-white"
+                        : "bg-white/50 border-gray-200 text-primary-400 hover:border-primary-400/30 hover:text-white"
                     )}
                   >
                     {t}h
                   </button>
                 ))
               ) : (
-                <div className="col-span-3 sm:col-span-4 text-center py-16 bg-charcoal-900/30 rounded-[32px] border-2 border-charcoal-700 border-dashed">
-                  <Clock className="mx-auto text-charcoal-700 mb-6" size={48} />
-                  <p className="text-charcoal-400 font-light mb-6">{t('booking.sold_out')}</p>
+                <div className="col-span-3 sm:col-span-4 text-center py-16 bg-white/30 rounded-[32px] border-2 border-gray-200 border-dashed">
+                  <Clock className="mx-auto text-gray-400 mb-6" size={48} />
+                  <p className="text-gray-600 font-light mb-6">{t('booking.sold_out')}</p>
                   <button onClick={handleBack} className="text-primary-400 font-bold uppercase tracking-widest text-xs hover:text-primary-300 transition-colors">{t('booking.choose_another_date')}</button>
                 </div>
               )}
@@ -389,18 +389,18 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
 
         {/* STEP 5: CLIENT DETAILS */}
         {step === 5 && (
-          <div className="bg-charcoal-800 p-8 md:p-10 rounded-[40px] shadow-2xl border border-charcoal-700 animate-in slide-in-from-bottom-8">
+          <div className="bg-gray-50 p-8 md:p-10 rounded-[40px] shadow-2xl border border-gray-200 animate-in slide-in-from-bottom-8">
              <div className="space-y-8">
                 <div>
                   <label className="block text-xs font-bold text-primary-400/80 uppercase tracking-[0.2em] mb-4">{t('booking.name_label')}</label>
                   <div className="relative group">
-                    <User className="absolute left-6 top-1/2 -translate-y-1/2 text-charcoal-600 group-focus-within:text-primary-400 transition-colors" size={20} />
+                    <User className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary-400 transition-colors" size={20} />
                     <input 
                       type="text" 
                       value={clientName}
                       onChange={e => setClientName(e.target.value)}
                       placeholder={t('booking.name_placeholder')}
-                      className="w-full pl-16 pr-6 h-20 bg-charcoal-900 border border-charcoal-700 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400/50 transition-all text-xl font-serif text-white placeholder:text-charcoal-700"
+                      className="w-full pl-16 pr-6 h-20 bg-white border border-gray-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400/50 transition-all text-xl font-sans text-gray-900 placeholder:text-gray-400"
                     />
                   </div>
                 </div>
@@ -408,13 +408,13 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
                 <div>
                   <label className="block text-xs font-bold text-primary-400/80 uppercase tracking-[0.2em] mb-4">{t('booking.phone_label')}</label>
                   <div className="relative group">
-                    <Phone className="absolute left-6 top-1/2 -translate-y-1/2 text-charcoal-600 group-focus-within:text-primary-400 transition-colors" size={20} />
+                    <Phone className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary-400 transition-colors" size={20} />
                     <input 
                       type="tel" 
                       value={clientPhone}
                       onChange={e => setClientPhone(e.target.value)}
                       placeholder={t('booking.phone_placeholder')}
-                      className="w-full pl-16 pr-6 h-20 bg-charcoal-900 border border-charcoal-700 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400/50 transition-all text-xl font-mono text-white placeholder:text-charcoal-700"
+                      className="w-full pl-16 pr-6 h-20 bg-white border border-gray-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400/50 transition-all text-xl font-mono text-gray-900 placeholder:text-gray-400"
                     />
                   </div>
                 </div>
@@ -425,12 +425,12 @@ export const ClientBooking = ({ onGoToAppointments }: { onGoToAppointments?: () 
 
       {/* Sticky Bottom Action Bar */}
       {step === 5 && (
-         <div className="fixed bottom-0 left-0 right-0 p-6 md:p-8 bg-charcoal-800/90 backdrop-blur-xl border-t border-charcoal-700 pb-safe z-30 shadow-2xl rounded-t-[40px]">
+         <div className="fixed bottom-0 left-0 right-0 p-6 md:p-8 bg-gray-50/90 backdrop-blur-xl border-t border-gray-200 pb-safe z-30 shadow-2xl rounded-t-[40px]">
            <div className="max-w-2xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div className="hidden md:block">
-                 <p className="text-3xl font-serif font-medium text-primary-400">{formatCurrency(selectedService?.price || 0)}</p>
-                 <p className="text-sm font-light text-charcoal-300 tracking-wide">{selectedService?.name}</p>
-                 <p className="text-[10px] text-charcoal-500 mt-2 uppercase tracking-widest font-bold font-ui">
+                 <p className="text-3xl font-sans font-medium text-primary-400">{formatCurrency(selectedService?.price || 0)}</p>
+                 <p className="text-sm font-light text-gray-700 tracking-wide">{selectedService?.name}</p>
+                 <p className="text-[10px] text-gray-500 mt-2 uppercase tracking-widest font-bold font-ui">
                    {format(parseISO(date), 'dd/MM', { locale: currentLocale })} • {time}H • {selectedProfessional?.name}
                  </p>
               </div>

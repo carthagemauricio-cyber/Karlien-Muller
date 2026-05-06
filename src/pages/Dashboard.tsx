@@ -69,13 +69,13 @@ export const Dashboard = () => {
   return (
     <div className="p-6 md:p-10 max-w-7xl mx-auto pb-24 md:pb-10 min-h-screen">
       <div className="mb-10">
-        <h1 className="text-4xl font-serif font-medium text-white mb-2">{t('dashboard.title')}</h1>
+        <h1 className="text-4xl font-sans font-medium text-gray-900 mb-2">{t('dashboard.title')}</h1>
         <div className="h-1 w-20 bg-primary-400 mb-2"></div>
-        <p className="text-charcoal-400 font-light">{t('dashboard.subtitle')}</p>
+        <p className="text-gray-600 font-light">{t('dashboard.subtitle')}</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-        <div className="bg-charcoal-800 rounded-[32px] p-8 shadow-2xl border border-charcoal-700 flex flex-col group hover:border-primary-400/30 transition-all relative overflow-hidden">
+        <div className="bg-gray-50 rounded-[32px] p-8 shadow-2xl border border-gray-200 flex flex-col group hover:border-primary-400/30 transition-all relative overflow-hidden">
           <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-primary-400/10 to-secondary-400/10 rounded-bl-full pointer-events-none"></div>
           <div className="flex items-center justify-between mb-6">
             <div className="w-12 h-12 rounded-2xl bg-primary-400/10 text-primary-400 flex items-center justify-center border border-primary-400/20">
@@ -83,45 +83,45 @@ export const Dashboard = () => {
             </div>
             <TrendingUp size={20} className="text-emerald-500" />
           </div>
-          <p className="text-xs text-charcoal-500 font-semibold uppercase tracking-widest mb-1">{t('dashboard.total_bookings')}</p>
-          <h2 className="text-4xl font-serif font-medium text-primary-200">{appointments.length}</h2>
+          <p className="text-xs text-gray-500 font-semibold uppercase tracking-widest mb-1">{t('dashboard.total_bookings')}</p>
+          <h2 className="text-4xl font-sans font-medium text-primary-200">{appointments.length}</h2>
         </div>
 
-        <div className="bg-charcoal-800 rounded-[32px] p-8 shadow-2xl border border-charcoal-700 flex flex-col group hover:border-secondary-400/30 transition-all relative overflow-hidden">
+        <div className="bg-gray-50 rounded-[32px] p-8 shadow-2xl border border-gray-200 flex flex-col group hover:border-secondary-400/30 transition-all relative overflow-hidden">
           <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-secondary-400/10 to-primary-400/10 rounded-bl-full pointer-events-none"></div>
           <div className="flex items-center justify-between mb-6">
             <div className="w-12 h-12 rounded-2xl bg-secondary-400/10 text-secondary-400 flex items-center justify-center border border-secondary-400/20">
               <Users size={24} />
             </div>
           </div>
-          <p className="text-xs text-charcoal-500 font-semibold uppercase tracking-widest mb-1">{t('dashboard.clients_today')}</p>
-          <h2 className="text-4xl font-serif font-medium text-secondary-200">{uniqueClientsToday}</h2>
+          <p className="text-xs text-gray-500 font-semibold uppercase tracking-widest mb-1">{t('dashboard.clients_today')}</p>
+          <h2 className="text-4xl font-sans font-medium text-secondary-200">{uniqueClientsToday}</h2>
         </div>
 
-        <div className="bg-charcoal-800 rounded-[32px] p-8 shadow-2xl border border-charcoal-700 flex flex-col group hover:border-primary-400/30 transition-all">
+        <div className="bg-gray-50 rounded-[32px] p-8 shadow-2xl border border-gray-200 flex flex-col group hover:border-primary-400/30 transition-all">
           <div className="flex items-center justify-between mb-6">
-            <div className="w-12 h-12 rounded-2xl bg-charcoal-700 text-primary-400 flex items-center justify-center border border-primary-400/10">
+            <div className="w-12 h-12 rounded-2xl bg-gray-100 text-primary-400 flex items-center justify-center border border-primary-400/10">
               <Clock size={24} />
             </div>
           </div>
-          <p className="text-xs text-charcoal-500 font-semibold uppercase tracking-widest mb-1">{t('dashboard.pending_today')}</p>
-          <h2 className="text-4xl font-serif font-medium text-primary-200">
+          <p className="text-xs text-gray-500 font-semibold uppercase tracking-widest mb-1">{t('dashboard.pending_today')}</p>
+          <h2 className="text-4xl font-sans font-medium text-primary-200">
             {todayAppointments.filter(a => a.status === 'Pendente').length}
           </h2>
         </div>
       </div>
 
-      <div className="bg-charcoal-800 rounded-[40px] shadow-2xl border border-charcoal-700 overflow-hidden flex flex-col">
+      <div className="bg-gray-50 rounded-[40px] shadow-2xl border border-gray-200 overflow-hidden flex flex-col">
         {/* Filters Bar */}
-        <div className="p-6 border-b border-charcoal-700 flex flex-col md:flex-row gap-4 justify-between bg-charcoal-800/50 backdrop-blur-md">
+        <div className="p-6 border-b border-gray-200 flex flex-col md:flex-row gap-4 justify-between bg-gray-50/50 backdrop-blur-md">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-charcoal-500" size={18} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
             <input 
               type="text" 
               placeholder={t('dashboard.search_placeholder')} 
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-charcoal-900 border border-charcoal-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400/30 transition-all text-sm text-white placeholder-charcoal-600"
+              className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400/30 transition-all text-sm text-gray-900 placeholder-gray-400"
             />
           </div>
           <div className="flex gap-3">
@@ -129,12 +129,12 @@ export const Dashboard = () => {
               type="date"
               value={dateFilter}
               onChange={e => setDateFilter(e.target.value)}
-              className="flex-1 md:flex-none px-4 py-3 bg-charcoal-900 border border-charcoal-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400/30 transition-all text-sm text-charcoal-400 font-medium font-ui"
+              className="flex-1 md:flex-none px-4 py-3 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400/30 transition-all text-sm text-gray-600 font-medium font-ui"
             />
             <select 
               value={statusFilter}
               onChange={e => setStatusFilter(e.target.value)}
-              className="flex-1 md:flex-none px-4 py-3 bg-charcoal-900 border border-charcoal-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400/30 transition-all text-sm text-charcoal-400 font-medium font-ui"
+              className="flex-1 md:flex-none px-4 py-3 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400/30 transition-all text-sm text-gray-600 font-medium font-ui"
             >
               <option value="all">{t('dashboard.status_all')}</option>
               <option value="Pendente">{t('common.pending', 'Pendente')}</option>
@@ -147,7 +147,7 @@ export const Dashboard = () => {
         </div>
 
         {/* Mobile Cards View */}
-        <div className="md:hidden flex flex-col gap-4 p-4 bg-charcoal-900/30">
+        <div className="md:hidden flex flex-col gap-4 p-4 bg-white/30">
           {filteredAppointments.length > 0 ? (
             filteredAppointments.map(app => {
               const service = services.find(s => s.id === app.serviceId);
@@ -155,10 +155,10 @@ export const Dashboard = () => {
               const dateObj = parseISO(app.date);
 
               return (
-                <div key={app.id} className="bg-charcoal-800 p-6 rounded-[32px] border border-charcoal-700 shadow-xl flex flex-col gap-4">
+                <div key={app.id} className="bg-gray-50 p-6 rounded-[32px] border border-gray-200 shadow-xl flex flex-col gap-4">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h4 className="font-serif font-medium text-xl text-white">
+                      <h4 className="font-sans font-medium text-xl text-gray-900">
                         {app.clientName}
                       </h4>
                       <p className="text-xs text-primary-400/60 font-mono mt-1">{app.clientPhone}</p>
@@ -166,37 +166,37 @@ export const Dashboard = () => {
                     {getStatusBadge(app.status)}
                   </div>
                   
-                  <div className="w-full h-px bg-charcoal-700"></div>
+                  <div className="w-full h-px bg-gray-100"></div>
                   
                   <div className="flex flex-col gap-3">
                     <div className="flex items-center gap-4 text-sm">
-                      <div className="w-9 h-9 rounded-full bg-charcoal-700 flex items-center justify-center shrink-0 border border-charcoal-600">
+                      <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center shrink-0 border border-gray-300">
                          <Scissors size={16} className="text-primary-400" />
                       </div>
-                      <span className="font-medium text-charcoal-200">{service?.name}</span>
+                      <span className="font-medium text-gray-800">{service?.name}</span>
                     </div>
                     <div className="flex items-center gap-4 text-sm">
                        {professional?.photo ? (
                          <img src={professional.photo} alt={professional.name} className="w-9 h-9 rounded-full object-cover shrink-0 border border-secondary-400/20" />
                        ) : (
-                         <div className="w-9 h-9 rounded-full bg-charcoal-700 flex items-center justify-center shrink-0 border border-charcoal-600">
+                         <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center shrink-0 border border-gray-300">
                            <User size={16} className="text-primary-400" />
                          </div>
                        )}
-                      <span className="font-medium text-charcoal-300">{professional?.name}</span>
+                      <span className="font-medium text-gray-700">{professional?.name}</span>
                     </div>
                     <div className="flex items-center gap-4 text-sm">
-                      <div className="w-9 h-9 rounded-full bg-charcoal-700 flex items-center justify-center shrink-0 border border-charcoal-600">
+                      <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center shrink-0 border border-gray-300">
                         <Clock size={16} className="text-primary-400" />
                       </div>
-                      <span className="font-medium text-charcoal-300">
+                      <span className="font-medium text-gray-700">
                         {format(dateObj, 'dd MMM yyyy', { locale: currentLocale })} às <strong className="text-secondary-400 font-mono">{app.time}h</strong>
                       </span>
                     </div>
                   </div>
 
                   {/* Actions */}
-                  <div className="flex gap-2 mt-4 pt-4 border-t border-charcoal-700 flex-wrap">
+                  <div className="flex gap-2 mt-4 pt-4 border-t border-gray-200 flex-wrap">
                      {app.status === 'Pendente' && (
                         <button 
                           onClick={() => handleStatusChange(app.id, 'Confirmado')}
@@ -232,7 +232,7 @@ export const Dashboard = () => {
                       {app.status === 'Cancelado' && (
                         <button 
                           onClick={() => handleStatusChange(app.id, 'Pendente')}
-                          className="flex-1 py-3 bg-charcoal-700 text-charcoal-300 rounded-xl text-xs font-semibold hover:bg-charcoal-600 transition-all uppercase tracking-widest font-ui"
+                          className="flex-1 py-3 bg-gray-100 text-gray-700 rounded-xl text-xs font-semibold hover:bg-gray-200 transition-all uppercase tracking-widest font-ui"
                         >
                           {t('dashboard.reactivate_btn')}
                         </button>
@@ -240,7 +240,7 @@ export const Dashboard = () => {
                       
                       <button 
                         onClick={() => handleDelete(app.id)}
-                        className="py-3 px-6 bg-charcoal-700 text-rose-400/80 rounded-xl text-xs font-semibold hover:bg-rose-900/20 transition-all border border-transparent hover:border-rose-900/30"
+                        className="py-3 px-6 bg-gray-100 text-rose-400/80 rounded-xl text-xs font-semibold hover:bg-rose-900/20 transition-all border border-transparent hover:border-rose-900/30"
                       >
                         {t('dashboard.delete_btn')}
                       </button>
@@ -249,7 +249,7 @@ export const Dashboard = () => {
               )
             })
           ) : (
-            <div className="text-center py-16 text-charcoal-500 font-light bg-charcoal-800/50 rounded-[32px] border border-charcoal-700 border-dashed">
+            <div className="text-center py-16 text-gray-500 font-light bg-gray-50/50 rounded-[32px] border border-gray-200 border-dashed">
               {t('dashboard.no_appointments')}
             </div>
           )}
@@ -258,7 +258,7 @@ export const Dashboard = () => {
         {/* Table View Desktop */}
         <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
-            <thead className="bg-charcoal-900/50 text-secondary-400 border-b border-charcoal-700">
+            <thead className="bg-white/50 text-secondary-400 border-b border-gray-200">
               <tr>
                 <th className="px-8 py-5 font-semibold text-[10px] uppercase tracking-[0.2em]">{t('dashboard.table_client')}</th>
                 <th className="px-8 py-5 font-semibold text-[10px] uppercase tracking-[0.2em]">{t('dashboard.table_contact')}</th>
@@ -269,7 +269,7 @@ export const Dashboard = () => {
                 <th className="px-8 py-5 font-semibold text-[10px] uppercase tracking-[0.2em] text-right">{t('dashboard.table_action')}</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-charcoal-700">
+            <tbody className="divide-y divide-gray-200">
               {filteredAppointments.length > 0 ? (
                 filteredAppointments.map(app => {
                   const service = services.find(s => s.id === app.serviceId);
@@ -277,17 +277,17 @@ export const Dashboard = () => {
                   const dateObj = parseISO(app.date);
 
                   return (
-                    <tr key={app.id} className="hover:bg-charcoal-700/30 transition-all group">
+                    <tr key={app.id} className="hover:bg-gray-100/30 transition-all group">
                       <td className="px-8 py-6">
-                        <div className="font-serif text-lg text-white group-hover:text-primary-200 transition-colors uppercase tracking-tight">{app.clientName}</div>
-                        <div className="text-[10px] text-charcoal-500 mt-1 uppercase tracking-widest font-mono">{t('dashboard.created_at', { date: format(new Date(app.createdAt || new Date()), 'dd/MM, HH:mm') })}</div>
+                        <div className="font-sans text-lg text-gray-900 group-hover:text-primary-200 transition-colors uppercase tracking-tight">{app.clientName}</div>
+                        <div className="text-[10px] text-gray-500 mt-1 uppercase tracking-widest font-mono">{t('dashboard.created_at', { date: format(new Date(app.createdAt || new Date()), 'dd/MM, HH:mm') })}</div>
                       </td>
-                      <td className="px-8 py-6 font-mono text-xs text-charcoal-400 group-hover:text-primary-400/50">{app.clientPhone}</td>
-                      <td className="px-8 py-6 text-charcoal-200 font-light">{service?.name}</td>
+                      <td className="px-8 py-6 font-mono text-xs text-gray-600 group-hover:text-primary-400/50">{app.clientPhone}</td>
+                      <td className="px-8 py-6 text-gray-800 font-light">{service?.name}</td>
                       <td className="px-8 py-6">
                         <div className="flex items-center gap-3">
                           <img src={professional?.photo} alt="" className="w-8 h-8 rounded-full object-cover border border-secondary-400/20" />
-                          <span className="text-charcoal-300 font-light group-hover:text-white transition-colors">{professional?.name}</span>
+                          <span className="text-gray-700 font-light group-hover:text-gray-900 transition-colors">{professional?.name}</span>
                         </div>
                       </td>
                       <td className="px-8 py-6">
@@ -334,14 +334,14 @@ export const Dashboard = () => {
                           {app.status === 'Cancelado' && (
                             <button 
                               onClick={() => handleStatusChange(app.id, 'Pendente')}
-                              className="px-4 py-2 bg-charcoal-700 text-charcoal-400 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-charcoal-600 transition-all"
+                              className="px-4 py-2 bg-gray-100 text-gray-600 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-gray-200 transition-all"
                             >
                               {t('dashboard.reactivate_btn')}
                             </button>
                           )}
                           <button 
                             onClick={() => handleDelete(app.id)}
-                            className="px-3 py-2 bg-charcoal-700 text-rose-400/60 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-rose-900/30 hover:text-rose-400 transition-all"
+                            className="px-3 py-2 bg-gray-100 text-rose-400/60 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-rose-900/30 hover:text-rose-400 transition-all"
                             title={t('dashboard.delete_btn')}
                           >
                             <XCircle size={14} />
@@ -353,7 +353,7 @@ export const Dashboard = () => {
                 })
               ) : (
                 <tr>
-                  <td colSpan={7} className="px-8 py-20 text-center text-charcoal-500 font-light border-dashed border-2 border-charcoal-700 bg-charcoal-900/30 m-4 rounded-[32px]">
+                  <td colSpan={7} className="px-8 py-20 text-center text-gray-500 font-light border-dashed border-2 border-gray-200 bg-white/30 m-4 rounded-[32px]">
                     {t('dashboard.no_appointments')}
                   </td>
                 </tr>
