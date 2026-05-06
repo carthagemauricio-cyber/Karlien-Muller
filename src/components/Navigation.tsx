@@ -59,7 +59,7 @@ export const Sidebar = ({
         </div>
       </div>
 
-      <nav className="flex flex-col gap-2 flex-1 pt-4">
+      <nav className="flex flex-col gap-2 flex-1 pt-4 overflow-y-auto custom-scrollbar pr-2">
         <NavItem 
           icon={<Home size={20} />} 
           label={t('navigation.dashboard')} 
